@@ -1,0 +1,642 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const CORS={
+  "Access-Control-Allow-Origin":"*",
+  "Access-Control-Allow-Headers":"authorization,x-client-info,apikey,content-type",
+  "Access-Control-Allow-Methods":"POST,OPTIONS",
+  "Content-Type":"application/json; charset=utf-8"
+};
+
+const GEMINI="https://generativelanguage.googleapis.com/v1beta/interactions";
+const MODEL=Deno.env.get("ANDALUS_AI_MODEL")||"gemini-3.5-flash-lite";
+
+const clean=(v:any,n=6000)=>String(v??"").replace(/\s+/g," ").trim().slice(0,n);
+const json=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:CORS});
+
+async function auth(req:Request){
+ const token=(req.headers.get("Authorization")||"").replace(/^Bearer\s+/i,"").trim();
+ if(!token)throw Error("غير مصرح: يلزم تسجيل الدخول.");
+
+ const url=Deno.env.get("SUPABASE_URL")!;
+ const anon=Deno.env.get("SUPABASE_ANON_KEY")!;
+ const service=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+ const ac=createClient(url,anon,{global:{headers:{Authorization:`Bearer ${token}`}}});
+ const {data:{user},error}=await ac.auth.getUser(token);
+ if(error||!user)throw Error("جلسة الدخول غير صالحة.");
+
+ const db=createClient(url,service);
+ const {data:p,error:pe}=await db.from("user_profiles")
+   .select("id,role,full_name,allowed_pages,is_active")
+   .eq("id",user.id).maybeSingle();
+
+ if(pe)throw Error("تعذر التحقق من الصلاحيات.");
+ if(!p || p.is_active===false)throw Error("الحساب غير نشط أو لا يملك ملف صلاحيات.");
+ if(p.role!=="admin")throw Error("Andalus AI متاح لحساب المدير فقط لحماية بيانات المركز.");
+
+ return {user,profile:p,db};
+}
+
+const tools=[
+ {
+  type:"function",
+  name:"get_database_schema",
+  description:"قراءة هيكل قاعدة بيانات مركز الأندلس لمعرفة الجداول والأعمدة قبل بناء أي استعلام.",
+  parameters:{type:"object",properties:{},additionalProperties:false}
+ },
+ {
+  type:"function",
+  name:"query_database",
+  description:"قراءة بيانات من جدول حقيقي بعد معرفة الـschema. استخدمها للقوائم والتفاصيل والبحث والترتيب.",
+  parameters:{
+   type:"object",
+   properties:{
+    table:{type:"string"},
+    columns:{type:"array",items:{type:"string"}},
+    filters:{type:"array",items:{
+     type:"object",
+     properties:{
+      column:{type:"string"},
+      operator:{type:"string",enum:["eq","neq","gt","gte","lt","lte","ilike","in","is_null","not_null"]},
+      value:{}
+     },
+     required:["column","operator"],
+     additionalProperties:false
+    }},
+    order_by:{type:["string","null"]},
+    order_desc:{type:"boolean"},
+    limit:{type:"integer"}
+   },
+   required:["table","columns","filters","order_by","order_desc","limit"],
+   additionalProperties:false
+  }
+ },
+ {
+  type:"function",
+  name:"aggregate_database",
+  description:"حساب count/sum/avg/min/max مع grouping والفلاتر.",
+  parameters:{
+   type:"object",
+   properties:{
+    table:{type:"string"},
+    group_by:{type:"array",items:{type:"string"}},
+    measure_column:{type:["string","null"]},
+    operation:{type:"string",enum:["count","sum","avg","min","max"]},
+    filters:{type:"array",items:{
+     type:"object",
+     properties:{
+      column:{type:"string"},
+      operator:{type:"string",enum:["eq","neq","gt","gte","lt","lte","ilike","in","is_null","not_null"]},
+      value:{}
+     },
+     required:["column","operator"],
+     additionalProperties:false
+    }},
+    limit:{type:"integer"}
+   },
+   required:["table","group_by","measure_column","operation","filters","limit"],
+   additionalProperties:false
+  }
+ }
+];
+
+function cairoDateISO(){
+ return new Intl.DateTimeFormat("en-CA",{
+  timeZone:"Africa/Cairo",
+  year:"numeric",
+  month:"2-digit",
+  day:"2-digit"
+ }).format(new Date());
+}
+
+
+function isMissingEnglishPaymentQuestion(message:string){
+ return /(?:الإنجليزي|الانجليزى|الانجليزي|انجليزي|انجليزى|english).*?(?:فاضي|فاضية|فاضيه|فارغ|فارغة|مفيش|مش مكتوب|مش مسجل|من غير|ملوش|مالوش|ليس له|بدون).*(?:مصروف|المصروفات|المدفوعات|الدفع)?|(?:فاضي|فاضية|فاضيه|فارغ|فارغة|مفيش|مش مكتوب|مش مسجل|من غير|ملوش|مالوش|ليس له|بدون).*?(?:الإنجليزي|الانجليزى|الانجليزي|انجليزي|انجليزى).*?(?:مصروف|المصروفات|المدفوعات|الدفع)?/i.test(message);
+}
+
+async function getStudentsMissingEnglishPayments(db:any){
+ const {data:payments,error:pe}=await db.from("payments")
+   .select("student_id,eng_total_grade,eng_student_grade,eng_exam_result")
+   .not("student_id","is",null)
+   .limit(5000);
+
+ if(pe)throw Error(pe.message);
+
+ const rows=Array.isArray(payments)?payments:[];
+
+ const byStudent=new Map<string,any>();
+
+ for(const p of rows){
+  const id=String(p.student_id||"").trim();
+  if(!id)continue;
+
+  if(!byStudent.has(id)){
+   byStudent.set(id,{
+    student_id:id,
+    has_english:false,
+    records:0
+   });
+  }
+
+  const item=byStudent.get(id);
+  item.records+=1;
+
+  const hasEnglish =
+    (p.eng_total_grade!==null && p.eng_total_grade!==undefined && String(p.eng_total_grade).trim()!=="") ||
+    (p.eng_student_grade!==null && p.eng_student_grade!==undefined && String(p.eng_student_grade).trim()!=="") ||
+    (p.eng_exam_result!==null && p.eng_exam_result!==undefined && String(p.eng_exam_result).trim()!=="");
+
+  if(hasEnglish)item.has_english=true;
+ }
+
+ const missingIds=[...byStudent.entries()]
+   .filter(([,x])=>!x.has_english)
+   .map(([id])=>id);
+
+ if(!missingIds.length){
+  return {
+   total_students:0,
+   students:[],
+   message:"لا يوجد طلاب في سجلات المصروفات جميع حقول الإنجليزي الخاصة بهم فارغة."
+  };
+ }
+
+ const {data:students,error:se}=await db.from("students")
+   .select("id,name,enrollment_number,branch,program,phone")
+   .in("id",missingIds);
+
+ if(se)throw Error(se.message);
+
+ const result=(students||[])
+   .map((st:any)=>{
+    const x=byStudent.get(String(st.id));
+    return {
+     student_id:String(st.id),
+     name:st.name||"غير مسجل",
+     enrollment_number:st.enrollment_number||"",
+     branch:st.branch||"",
+     program:st.program||"",
+     phone:st.phone||"",
+     payment_records:x?.records||0
+    };
+   })
+   .sort((a:any,b:any)=>String(a.name).localeCompare(String(b.name),"ar"));
+
+ return {
+  total_students:result.length,
+  students:result
+ };
+}
+
+function isOverduePaymentQuestion(message:string){
+ return /متأخر|متاخر|المتأخرين|المتاخرين|متأخرون|متاخرون|تأخير.*سداد|سداد.*تأخير|متأخر.*سداد|سداد.*متأخر/i.test(message);
+}
+
+async function getVerifiedOverdueStudents(db:any){
+ const today=cairoDateISO();
+
+ const {data:payments,error:pe}=await db.from("payments")
+   .select("student_id,amount,due_date")
+   .eq("paid",false)
+   .gt("amount",0)
+   .lt("due_date",today)
+   .not("student_id","is",null)
+   .limit(1000);
+
+ if(pe)throw Error(pe.message);
+
+ const rows=Array.isArray(payments)?payments:[];
+ if(!rows.length){
+  return {today,total_students:0,total_overdue:0,students:[]};
+ }
+
+ const ids=[...new Set(rows.map((x:any)=>String(x.student_id)).filter(Boolean))];
+
+ const {data:students,error:se}=await db.from("students")
+   .select("id,name,branch,phone,program")
+   .in("id",ids);
+
+ if(se)throw Error(se.message);
+
+ const byId=new Map((students||[]).map((s:any)=>[String(s.id),s]));
+ const grouped=new Map<string,any>();
+
+ for(const p of rows){
+  const id=String(p.student_id);
+  const amount=Number(p.amount)||0;
+  const s=byId.get(id);
+  if(!s)continue;
+
+  if(!grouped.has(id)){
+   grouped.set(id,{
+    student_id:id,
+    name:s.name||"غير مسجل",
+    branch:s.branch||"",
+    phone:s.phone||"",
+    program:s.program||"",
+    overdue_amount:0,
+    installments:0,
+    oldest_due_date:p.due_date
+   });
+  }
+
+  const item=grouped.get(id);
+  item.overdue_amount+=amount;
+  item.installments+=1;
+  if(String(p.due_date)<String(item.oldest_due_date||p.due_date)){
+   item.oldest_due_date=p.due_date;
+  }
+ }
+
+ const result=[...grouped.values()]
+   .sort((a,b)=>b.overdue_amount-a.overdue_amount);
+
+ return {
+  today,
+  total_students:result.length,
+  total_overdue:result.reduce((sum,x)=>sum+x.overdue_amount,0),
+  students:result.slice(0,500)
+ };
+}
+
+async function tool(name:string,args:any,db:any){
+ if(name==="get_students_missing_english_payments"){
+  return await getStudentsMissingEnglishPayments(db);
+ }
+
+ if(name==="get_verified_overdue_students"){
+  return await getVerifiedOverdueStudents(db);
+ }
+
+ if(name==="get_database_schema"){
+  const {data,error}=await db.rpc("ai_schema");
+  if(error)throw Error(error.message);
+  return data;
+ }
+
+ if(name==="query_database"){
+  const {data,error}=await db.rpc("ai_read",{
+   p_table:clean(args.table,100),
+   p_columns:args.columns||[],
+   p_filters:args.filters||[],
+   p_order_by:args.order_by||null,
+   p_order_desc:!!args.order_desc,
+   p_limit:Math.min(Number(args.limit)||100,500)
+  });
+  if(error)throw Error(error.message);
+  return data;
+ }
+
+ if(name==="aggregate_database"){
+  const {data,error}=await db.rpc("ai_aggregate",{
+   p_table:clean(args.table,100),
+   p_group_by:args.group_by||[],
+   p_measure_column:args.measure_column||null,
+   p_operation:args.operation||"count",
+   p_filters:args.filters||[],
+   p_limit:Math.min(Number(args.limit)||100,500)
+  });
+  if(error)throw Error(error.message);
+  return data;
+ }
+
+ throw Error("أداة غير معروفة.");
+}
+
+const INSTRUCTIONS=`
+أنت Andalus AI، المساعد الإداري الذكي لمركز الأندلس للتدريب.
+
+أنت مساعد عام للنظام ولست مجرد chatbot بسيط.
+
+قواعد أساسية:
+1. أجب بالعربية المصرية الواضحة والمباشرة.
+2. تستطيع الإجابة عن الطلاب والبرامج والمواد والدرجات والحضور والمدفوعات والإيرادات والمصروفات والبيانات الإدارية وأي معلومة موجودة في قاعدة البيانات.
+3. لا تخمن أي رقم.
+4. قبل استخدام جدول أو عمود غير معروف استخدم get_database_schema.
+5. استخدم query_database للبيانات والقوائم والتفاصيل.
+6. استخدم aggregate_database للحسابات والتجميعات.
+7. يمكنك تنفيذ الحسابات الرياضية بنفسك بعد الحصول على البيانات.
+8. إذا قال المستخدم "هم" أو "ده" أو "دي" أو "اقسمهم" أو "احسبهم" فحاول ربطها بنتيجة السؤال السابق في نفس المحادثة ولا تسأل سؤالًا توضيحيًا إذا كان المقصود واضحًا.
+9. إذا قال "كل" أو "جميع" فاجلب كل النتائج المتاحة ضمن الحد الآمن 500، واذكر العدد الإجمالي.
+10. إذا طلب دخل شهري ففرّق بوضوح بين:
+   - المحصل فعليًا.
+   - المستحق.
+   - المتأخر.
+   - متوسط الدخل.
+   ولا تعتبر عدد الطلاب دخلاً إلا إذا كانت قيمة الرسوم معروفة.
+11. إذا كان السؤال يحتاج أكثر من جدول، استخدم أكثر من أداة ثم اربط النتائج منطقيًا.
+12. لا تنفذ INSERT أو UPDATE أو DELETE أو أي تعديل.
+13. لا تعرض مفاتيح API أو service role أو بيانات سرية.
+14. لا تقل "لا أستطيع" لمجرد أن السؤال جديد؛ ابحث في الـschema والبيانات أولًا.
+15. لو البيانات غير موجودة فعلًا، قل بالضبط ما الذي ينقص.
+16. عند وجود نتيجة رقمية، اعرض الحساب بشكل مختصر ومفهوم.
+17. استخدم الجنيه المصري عند التعامل مع مبالغ مالية.
+18. بيانات الطلاب والمدفوعات والدرجات والحضور وغيرها بيانات حقيقية وحساسة: لا تنشئ أسماء أو أرقام أو هواتف أو فروع أو مبالغ من عندك تحت أي ظرف.
+19. عند السؤال عن المتأخرين في السداد يجب استخدام get_verified_overdue_students، والنتيجة التي تعود منها هي المصدر الوحيد للأسماء والمبالغ في الإجابة.
+20. عند السؤال عن الطلاب الذين خانة الإنجليزي أو بيانات الإنجليزي لديهم فارغة في المصروفات/المدفوعات، يجب استخدام get_students_missing_english_payments، والنتيجة التي تعود منها هي المصدر الوحيد لأسماء الطلاب.
+21. لا تقل إن البيانات فارغة أو موجودة إلا بعد فحص قاعدة البيانات فعليًا.
+22. لا تنشئ أي أسماء أو أرقام تسجيل أو برامج من عندك.
+20. "متأخر" يعني دفعة غير مسددة، قيمتها أكبر من صفر، وتاريخ استحقاقها أقدم من تاريخ اليوم بتوقيت القاهرة. الدفعة المستحقة اليوم ليست متأخرة.
+`;
+
+async function gemini(input:any,previous?:string){
+ const key=Deno.env.get("GEMINI_API_KEY");
+ if(!key)throw Error("مفتاح Gemini غير مضبوط على الخادم.");
+
+ const body:any={
+  model:MODEL,
+  input,
+  tools,
+  system_instruction:INSTRUCTIONS
+ };
+
+ if(previous)body.previous_interaction_id=previous;
+
+ let lastError="";
+ for(let attempt=0;attempt<3;attempt++){
+ const r=await fetch(GEMINI,{
+  method:"POST",
+  headers:{"Content-Type":"application/json","x-goog-api-key":key},
+  body:JSON.stringify(body)
+ });
+
+ const d=await r.json();
+ if(r.ok)return d;
+ lastError=d?.error?.message||"تعذر الاتصال بـ Gemini.";
+ if(/high demand|try again later|temporarily|rate limit|429/i.test(lastError) && attempt<2){
+  await new Promise(resolve=>setTimeout(resolve,1500*(attempt+1)));
+  continue;
+ }
+ throw Error(lastError);
+ }
+ throw Error(lastError||"تعذر الاتصال بـ Gemini.");
+}
+
+function callsOf(r:any){
+ return (r?.output||r?.steps||[]).filter((x:any)=>
+   x.type==="function_call" || x.type==="function_call_request"
+ );
+}
+
+function textOf(r:any){
+ if(typeof r?.output_text==="string" && r.output_text.trim())return r.output_text;
+ for(const x of (r?.output||r?.steps||[])){
+  if(x.type==="text" && typeof x.text==="string")return x.text;
+  if(x.content)for(const c of x.content){
+   if(c.type==="text"&&typeof c.text==="string")return c.text;
+  }
+ }
+ return "لم أتمكن من تكوين إجابة الآن.";
+}
+
+Deno.serve(async(req)=>{
+ if(req.method==="OPTIONS")return new Response("ok",{headers:CORS});
+ if(req.method!=="POST")return json({error:"Method not allowed"},405);
+
+ try{
+  const {db,profile,user}=await auth(req);
+  const body=await req.json();
+  const message=clean(body?.message);
+
+  if(!message)return json({error:"اكتب سؤالك أولًا."},400);
+
+  const {data:ctx}=await db.from("ai_conversations")
+    .select("previous_interaction_id,last_question,last_answer")
+    .eq("user_id",user.id).maybeSingle();
+
+  // البحث المباشر برقم القيد: في بيانات المركز الحالية رقم القيد محفوظ غالبًا في students.id
+  // بينما enrollment_number قد يكون فارغًا؛ لا نعتمد على النموذج لتحديد عمود البحث.
+  const normalizedMessage = message.replace(/[٠-٩]/g, (d:string) => String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+  const regMatch = normalizedMessage.match(/(?:رقم\s*(?:القيد|قيد|التسجيل|الطالب)|قيد\s*رقم)\s*[:#-]?\s*(\d{3,})/i);
+  if (regMatch) {
+    const requestedId = regMatch[1];
+    if (/غياب|غيابات|حضور|غايب|غائب|تغيب|متغيب/i.test(message)) {
+      const st = await db.from("students").select("id,name,enrollment_number,deleted_at").or("id.eq."+requestedId+",enrollment_number.eq."+requestedId).is("deleted_at",null).limit(1).maybeSingle();
+      if (st.error) throw Error("تعذر البحث عن الطالب.");
+      if (!st.data) return json({answer:"لم أجد الطالب برقم القيد "+requestedId,model:"verified_attendance_lookup"});
+      const dm = normalizedMessage.match(/(\d{1,2})[-/](\d{1,2})(?:[-/](\d{4}))?/);
+      let date = null;
+      if (dm) { const dd=Number(dm[1]), mm=Number(dm[2]), yy=Number(dm[3]||new Date().getFullYear()); const dt=new Date(Date.UTC(yy,mm-1,dd)); if(dt.getUTCFullYear()===yy&&dt.getUTCMonth()===mm-1&&dt.getUTCDate()===dd) date=yy+"-"+String(mm).padStart(2,"0")+"-"+String(dd).padStart(2,"0"); }
+      let lq = db.from("lectures").select("id,name,subject_name,lecture_date");
+      if (date) lq=lq.eq("lecture_date",date);
+      const lr=await lq.limit(500);
+      if(lr.error) throw Error("تعذر قراءة المحاضرات.");
+      const ids=(lr.data||[]).map((x:any)=>x.id);
+      let rows:any[]=[];
+      if(ids.length){const ar=await db.from("lecture_attendance").select("lecture_id,status").eq("student_id",requestedId).in("lecture_id",ids).limit(1000);if(ar.error)throw Error("تعذر قراءة حضور المحاضرات.");rows=(ar.data||[]).map((a:any)=>{const l=(lr.data||[]).find((x:any)=>x.id===a.lecture_id);return {date:l?.lecture_date||"",lecture:l?.name||l?.subject_name||"محاضرة",status:a.status};});}
+      const gr=await db.from("attendance").select("date,status,program").eq("student_id",requestedId).limit(1000);
+      if(gr.error) throw Error("تعذر قراءة الحضور العام.");
+      rows=rows.concat((gr.data||[]).filter((a:any)=>!date||String(a.date)===date||String(a.date)===date.split("-").reverse().join("-")).map((a:any)=>({date:a.date,lecture:a.program||"سجل الحضور العام",status:a.status})));
+      if(date) rows=rows.filter((x:any)=>String(x.date)===date||String(x.date)===date.split("-").reverse().join("-"));
+      const absent=rows.filter((x:any)=>/absent|absence|غائب|غياب|متغيب|لم يحضر/i.test(String(x.status||"")));
+      let answer="الطالب: "+st.data.name+"\nرقم القيد: "+(st.data.enrollment_number||st.data.id)+"\n";
+      if(date)answer+="التاريخ: "+date+"\n";
+      answer+=!rows.length?"لا يوجد سجل حضور أو غياب مسجل مطابق للبحث؛ عدم وجود سجل لا يعني إثبات الغياب.":!absent.length?"لم يظهر سجل غياب مسجل ضمن السجلات المطابقة.":"عدد سجلات الغياب: "+absent.length+"\n"+absent.map((x:any,i:number)=>(i+1)+". "+x.date+" — "+x.lecture+" — "+x.status).join("\n");
+      await db.from("ai_conversations").upsert({user_id:user.id,previous_interaction_id:ctx?.previous_interaction_id||null,last_question:message,last_answer:answer,updated_at:new Date().toISOString()});
+      return json({answer,model:"verified_attendance_lookup"});
+    }
+
+    const guardianIntent = /ولي\s*الأمر|ولى\s*الأمر|ولي\s*امر|ولى\s*امر|رقم\s*(?:تليفون|هاتف|موبايل)|رقم\s*الوالد|رقم\s*الوالدة|بيانات\s*ولي/i.test(message);
+    const previousGuardianIntent = /ولي\s*الأمر|ولى\s*الأمر|ولي\s*امر|ولى\s*امر|رقم\s*(?:تليفون|هاتف|موبايل)|رقم\s*الوالد|رقم\s*الوالدة/i.test(String(ctx?.last_question||""));
+    const wantsGuardian = guardianIntent || (!guardianIntent && previousGuardianIntent);
+    const {data:student,error:studentError} = await db.from("students")
+      .select("id,name,enrollment_number,guardian_name,guardian_phone,parent_name,parent_phone,branch,program,student_status,deleted_at")
+      .or(`id.eq.${requestedId},enrollment_number.eq.${requestedId}`)
+      .is("deleted_at", null)
+      .limit(1)
+      .maybeSingle();
+    if (studentError) throw Error("تعذر البحث عن الطالب في قاعدة البيانات.");
+    let answer = "";
+    if (!student) {
+      answer = `لم أجد طالبًا نشطًا برقم القيد ${requestedId} في قاعدة البيانات. لم أعتمد على تخمين.`;
+    } else if (wantsGuardian) {
+      const guardianName = student.guardian_name || student.parent_name || "";
+      const guardianPhone = student.guardian_phone || student.parent_phone || "";
+      if (!guardianPhone) {
+        answer = `وجدت الطالب ${student.name} برقم القيد ${requestedId}، لكن رقم هاتف ولي الأمر غير مسجل في حقول ولي الأمر بقاعدة البيانات.`;
+      } else {
+        answer = `اسم الطالب: ${student.name}\\nرقم القيد: ${student.enrollment_number || student.id}\\n${guardianName ? "اسم ولي الأمر: " + guardianName + "\\n" : ""}رقم ولي الأمر: ${guardianPhone}`;
+      }
+    } else {
+      answer = `تم العثور على الطالب: ${student.name}\\nرقم القيد: ${student.enrollment_number || student.id}${student.branch ? "\\nالفرع: " + student.branch : ""}${student.program ? "\\nالبرنامج: " + student.program : ""}\\nلو تقصد رقم ولي الأمر، اكتب "رقم ولي الأمر" وسأعرض البيانات المسجلة لهذا الطالب.`;
+    }
+    await db.from("ai_conversations").upsert({
+      user_id:user.id,
+      previous_interaction_id:ctx?.previous_interaction_id||null,
+      last_question:message,
+      last_answer:answer,
+      updated_at:new Date().toISOString()
+    });
+    try {
+      await db.from("activity_log").insert({
+        user_id:user.id,
+        action:"andalus_ai_student_lookup",
+        details:JSON.stringify({enrollment_lookup:requestedId,guardian_phone_requested:wantsGuardian})
+      });
+    } catch {}
+    return json({answer,model:"verified_student_lookup"});
+  }
+
+  // أسئلة الطلاب الذين بيانات الإنجليزي لديهم فارغة تُجاب من قاعدة البيانات مباشرة.
+  if(isMissingEnglishPaymentQuestion(message)){
+   const verified=await getStudentsMissingEnglishPayments(db);
+
+   let answer="";
+   if(!verified.total_students){
+    answer="لا يوجد طلاب مطابقون: كل الطلاب الموجودين في سجلات المصروفات لديهم بيانات إنجليزي مسجلة، أو لا توجد سجلات مطابقة.";
+   }else{
+    const lines=verified.students.map((s:any,i:number)=>
+     `${i+1}. ${s.name}${s.enrollment_number ? " — رقم التسجيل: " + s.enrollment_number : ""}${s.program ? " — البرنامج: " + s.program : ""}${s.branch ? " — الفرع: " + s.branch : ""}`
+    );
+
+    answer=[
+     `عدد الطلاب: ${verified.total_students}`,
+     "",
+     ...lines
+    ].join("\n");
+   }
+
+   await db.from("ai_conversations").upsert({
+    user_id:user.id,
+    previous_interaction_id:ctx?.previous_interaction_id||null,
+    last_question:message,
+    last_answer:answer,
+    updated_at:new Date().toISOString()
+   });
+
+   try{
+    await db.from("activity_log").insert({
+     user_id:user.id,
+     action:"andalus_ai_query",
+     details:JSON.stringify({question:message.slice(0,500),model:"verified_database_english"})
+    });
+   }catch{}
+
+   return json({answer,model:"verified_database_english"});
+  }
+
+  // أسئلة المتأخرين في السداد تُجاب من قاعدة البيانات مباشرة لمنع أي هلوسة.
+  if(isOverduePaymentQuestion(message)){
+   const verified=await getVerifiedOverdueStudents(db);
+
+   let answer="";
+   if(!verified.total_students){
+    answer=`لا يوجد حاليًا طلاب عليهم دفعات متأخرة في قاعدة البيانات حتى ${verified.today}.`;
+   }else{
+    const lines=verified.students.map((s:any,i:number)=>
+     `${i+1}. ${s.name} — ${s.overdue_amount.toLocaleString("ar-EG")} جنيه${s.branch ? " — الفرع: " + s.branch : ""}`
+    );
+
+    answer=[
+     `عدد الطلاب المتأخرين: ${verified.total_students}`,
+     `إجمالي المبالغ المتأخرة: ${verified.total_overdue.toLocaleString("ar-EG")} جنيه`,
+     "",
+     ...lines
+    ].join("\n");
+
+    if(verified.total_students>verified.students.length){
+     answer+=`\\n\\nتم عرض أول ${verified.students.length} طالبًا حسب قيمة المتأخرات.`;
+    }
+   }
+
+   await db.from("ai_conversations").upsert({
+    user_id:user.id,
+    previous_interaction_id:ctx?.previous_interaction_id||null,
+    last_question:message,
+    last_answer:answer,
+    updated_at:new Date().toISOString()
+   });
+
+   try{
+    await db.from("activity_log").insert({
+     user_id:user.id,
+     action:"andalus_ai_query",
+     details:JSON.stringify({question:message.slice(0,500),model:"verified_database"})
+    });
+   }catch{}
+
+   return json({answer,model:"verified_database"});
+  }
+
+  let input:any[]=[{
+   type:"user_input",
+   content:[{type:"text",text:message}]
+  }];
+
+  if(ctx?.last_question && ctx?.last_answer){
+   input.unshift({
+    type:"user_input",
+    content:[{
+     type:"text",
+     text:`السياق السابق:
+السؤال السابق: ${ctx.last_question}
+الإجابة السابقة: ${ctx.last_answer.slice(0,5000)}
+
+السؤال الحالي: ${message}`
+    }]
+   });
+  }
+
+  let r=await gemini(input,ctx?.previous_interaction_id||undefined);
+
+  for(let round=0;round<8;round++){
+   const calls=callsOf(r);
+   if(!calls.length)break;
+
+   const results:any[]=[];
+
+   for(const call of calls){
+    let args:any={};
+    try{
+     args=JSON.parse(call.arguments||call.args||"{}");
+    }catch{}
+
+    try{
+     const result=await tool(call.name,args,db);
+     results.push({
+      type:"function_result",
+      name:call.name,
+      call_id:call.id||call.call_id,
+      result:[{type:"text",text:JSON.stringify(result)}]
+     });
+    }catch(e:any){
+     results.push({
+      type:"function_result",
+      name:call.name,
+      call_id:call.id||call.call_id,
+      result:[{type:"text",text:JSON.stringify({error:e?.message||"Tool error"})}]
+     });
+    }
+   }
+
+   r=await gemini(results,r.id);
+  }
+
+  let answer=textOf(r);
+  if(answer==="لم أتمكن من تكوين إجابة الآن." && r?.status==="completed" && Array.isArray(r?.steps)){
+   const texts=r.steps.flatMap((s:any)=>Array.isArray(s?.content)?s.content:[]).filter((x:any)=>x?.type==="text"&&typeof x.text==="string").map((x:any)=>x.text.trim()).filter(Boolean);
+   if(texts.length)answer=texts[texts.length-1];
+  }
+
+  await db.from("ai_conversations").upsert({
+   user_id:user.id,
+   previous_interaction_id:r.id||null,
+   last_question:message,
+   last_answer:answer,
+   updated_at:new Date().toISOString()
+  });
+
+  try{
+   await db.from("activity_log").insert({
+    user_id:user.id,
+    action:"andalus_ai_query",
+    details:JSON.stringify({question:message.slice(0,500),model:MODEL})
+   });
+  }catch{}
+
+  return json({answer,model:MODEL});
+ }catch(e:any){
+  console.error("andalus-ai",e);
+  return json({error:e?.message||"حدث خطأ غير متوقع."},500);
+ }
+});
