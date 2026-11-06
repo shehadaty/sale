@@ -7836,36 +7836,25 @@ async function saveEmployee() {
   if (password.length < 6) { showToast('كلمة المرور 6 أحرف على الأقل', 'error'); return; }
   if (phone && !isValidEgyptPhone(phone)) { showToast('رقم الموبايل غير صحيح', 'error'); return; }
 
-  // 1) أنشئ المستخدم في Supabase Auth
-  const { data: authData, error: authErr } = await sb.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { username, full_name: fullname, role, branch },
-      emailRedirectTo: window.location.origin
-    }
+  // 1) إنشاء الموظف عبر دالة خادم للأدمن فقط (تنشئ حساب Auth وتضبط الدور والفرع والتفعيل)
+  const { data: created, error: createErr } = await sb.functions.invoke('admin-create-employee', {
+    body: { email, password, username, full_name: fullname, role, branch, phone, qualification, address, hiring_date: hiringDate, salary, commission_amount: commission }
   });
-  if (authErr) {
-    showToast('خطأ: ' + (authErr.message.includes('already') ? 'الإيميل مسجّل قبل كده' : authErr.message), 'error');
-    return;
+  let createFail = null;
+  if (createErr) {
+    try { createFail = await createErr.context.json(); } catch (_) { createFail = { error: createErr.message }; }
+  } else if (!created || created.ok !== true) {
+    createFail = created || { error: 'create_failed' };
   }
-  // 2) الـ trigger في Supabase هيعمل user_profiles تلقائيًا
-  // 3) تحديث بيانات البروفايل الإضافية
-  if (authData.user) {
-    const updates = {};
-    if (phone) updates.phone = phone;
-    if (qualification) updates.qualification = qualification;
-    if (address) updates.address = address;
-    if (hiringDate) updates.hiring_date = hiringDate;
-    if (salary !== null) updates.salary = salary;
-    if (commission !== null) updates.commission_amount = commission;
-    if (role !== 'employee' || branch !== 'الكل') {
-      updates.role = role;
-      updates.branch = branch;
-    }
-    if (Object.keys(updates).length > 0) {
-      await sb.from('user_profiles').update(updates).eq('id', authData.user.id);
-    }
+  if (createFail) {
+    const code = createFail.error || '';
+    const msg = code === 'already_registered' ? 'الإيميل مسجّل قبل كده'
+      : code === 'username_taken' ? 'اسم المستخدم مستخدم قبل كده'
+      : code === 'forbidden' ? 'غير مسموح: هذه العملية للمدير فقط'
+      : code === 'weak_password' ? 'كلمة المرور 6 أحرف على الأقل'
+      : (createFail.detail || code || 'تعذر إنشاء الموظف');
+    showToast('خطأ: ' + msg, 'error');
+    return;
   }
   await logActivity('add', 'أضاف موظف جديد: ' + username + ' | فرع: ' + branch);
   closeModal('modal-employee');
