@@ -30,7 +30,7 @@
   window.loadWeeklyQuizSection = async function () {
     const box = document.getElementById('weekly-quiz-content');
     if (!box) return;
-    box.innerHTML = '<p style="text-align:center;padding:20px;">جاري تحميل دوري الأندلس الذهبي...</p>';
+    box.innerHTML = '<p style="text-align:center;padding:20px;">جاري تحميل الدوري الذهبي...</p>';
     try {
       await window.ensureTodayQuizActivated();
       const today = cairoDateString();
@@ -148,7 +148,7 @@
       '</style>' +
       '<button class="btn btn-outline btn-sm" style="margin-bottom:12px;" onclick="backToPortalFromWeeklyQuiz()">◀ رجوع</button>' +
       '<section class="agl-shell">' +
-      '<header class="agl-head"><div class="agl-kicker">ANDALUS GOLDEN LEAGUE</div><div class="agl-title">🏆 دوري الأندلس الذهبي</div><div class="agl-subtitle">المعرفة منافسة، والتميز بطولة</div></header>' +
+      '<header class="agl-head"><div class="agl-kicker">ANDALUS GOLDEN LEAGUE</div><div class="agl-title">🏆 الدوري الذهبي</div><div class="agl-subtitle">المعرفة منافسة، والتميز بطولة</div></header>' +
       '<div class="agl-my-score">' +
       '<div class="agl-stat"><strong>' + Number(myScore.total_points || 0) + '</strong><span>نقاط الأسبوع</span></div>' +
       '<div class="agl-stat"><strong>' + Number(myScore.month_points || 0) + '</strong><span>نقاط الشهر</span></div>' +
@@ -344,7 +344,7 @@
     if(points>=100)badges.push(['🔥','متسابق نشيط','جمعت 100 نقطة أو أكثر']);
     if(points>=200)badges.push(['👑','نجم التأهل','وصلت إلى 200 نقطة أو أكثر']);
     pages.achievements.innerHTML+=badges.length?badges.map(function(b){return '<div class="agl-achievement"><span style="font-size:25px">'+b[0]+'</span><div><strong>'+b[1]+'</strong><span style="font-size:11px;color:#d7e0ee">'+b[2]+'</span></div></div>';}).join(''):'<div class="agl-empty">إنجازاتك في الدوري هتظهر هنا كلما جمعت نقاطًا وحققت أهدافًا جديدة.</div>';
-    pages.rules.innerHTML='<div class="agl-section-label">📜 نظام دوري الأندلس الذهبي</div>'+
+    pages.rules.innerHTML='<div class="agl-section-label">📜 نظام الدوري الذهبي</div>'+
       '<div class="agl-rule">🗓️ المسابقة من السبت إلى الخميس، والجمعة مخصصة لإعلان النتائج.</div>'+
       '<div class="agl-rule">⏰ تفتح المسابقة يوميًا من 7:00 إلى 8:00 مساءً بتوقيت القاهرة.</div>'+
       '<div class="agl-rule">🎯 خمس أسئلة يوميًا، وقيمة الإجابة الصحيحة 10 نقاط.</div>'+
@@ -379,7 +379,7 @@
     panel.className='card';
     panel.id='golden-league-admin-settings';
     panel.style.marginBottom='16px';
-    panel.innerHTML='<div class="card-header"><h3>🏆 إعدادات دوري الأندلس الذهبي</h3></div>'+
+    panel.innerHTML='<div class="card-header"><h3>🏆 إعدادات الدوري الذهبي</h3></div>'+
       '<div style="padding:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">'+
       '<label>بداية المسابقة<input id="agl-start" type="time" value="19:00"></label>'+
       '<label>نهاية المسابقة<input id="agl-end" type="time" value="20:00"></label>'+
@@ -435,8 +435,8 @@
       p_weekly_thresholds:targets,p_weekly_seconds:seconds
     });
     if(result.error||!result.data||!result.data.ok){showToast(result.error&&result.error.message||'تعذر حفظ الإعدادات.','error');return;}
-    if(typeof logActivity==='function')await logActivity('edit','تعديل إعدادات دوري الأندلس الذهبي');
-    showToast('تم حفظ إعدادات دوري الأندلس الذهبي.');
+    if(typeof logActivity==='function')await logActivity('edit','تعديل إعدادات الدوري الذهبي');
+    showToast('تم حفظ إعدادات الدوري الذهبي.');
     await injectGoldenLeagueAdminPanel();
     await loadGoldenLeagueMonthlyAdmin();
   };
@@ -452,12 +452,12 @@
 
   function relabelGoldenLeagueEntryPoints(){
     const title=document.querySelector('#weekly-quiz-card p');
-    if(title)title.textContent='🏆 دوري الأندلس الذهبي';
+    if(title)title.textContent='🏆 الدوري الذهبي';
     document.querySelectorAll('.nav-card[onclick*="weekly-quiz-admin"]').forEach(function(card){
-      const label=card.querySelector('span:last-child');if(label)label.textContent='دوري الأندلس الذهبي';
+      const label=card.querySelector('span:last-child');if(label)label.textContent='الدوري الذهبي';
     });
     document.querySelectorAll('[onclick*="goToPortalWeeklyQuiz"]').forEach(function(button){
-      if(button.tagName==='BUTTON')button.textContent='🏆 دوري الأندلس الذهبي';
+      if(button.tagName==='BUTTON')button.textContent='🏆 الدوري الذهبي';
     });
   }
   relabelGoldenLeagueEntryPoints();

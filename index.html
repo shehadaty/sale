@@ -2,17 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
 <script src="./config.js"></script>
+<script src="./branding.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
 (function(){try{var p=new URLSearchParams(window.location.search);if(p.get("student-portal")==="1")document.documentElement.setAttribute("data-student-portal-direct","1");}catch(_){}})();
 </script>
 <meta name="theme-color" content="#1a2a4a">
-<meta name="description" content="نظام إدارة مركز الاندلس للتدريب">
+<meta name="description" content="نظام إدارة الأكاديمية">
 <meta name="andalus-build" content="direct-portal-v30">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231a2a4a'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='%23c9a84c' font-family='Arial'>A</text></svg>">
-<title>نظام مركز الاندلس للتدريب</title>
+<title>نظام إدارة الأكاديمية</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -489,7 +490,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div id="exam-login-screen" class="exam-portal-card-wrap">
     <div class="login-card">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>بوابة الامتحانات الإلكترونية</p>
         <div class="gold-line"></div>
       </div>
@@ -551,7 +552,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div class="exam-portal-card-wrap">
     <div class="login-card" id="competition-card" style="max-width:460px;">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>المشاركة فى المسابقة</p>
         <div class="gold-line"></div>
       </div>
@@ -565,7 +566,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div class="exam-portal-card-wrap">
     <div class="login-card" id="student-portal-card" style="max-width:460px;">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>بوابة الطالب</p>
         <div class="gold-line"></div>
       </div>
@@ -579,7 +580,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div class="exam-portal-card-wrap">
     <div class="login-card" id="weekly-quiz-card" style="max-width:480px;">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>🏆 المسابقة الأسبوعية</p>
         <div class="gold-line"></div>
       </div>
@@ -593,7 +594,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div class="exam-portal-card-wrap">
     <div class="login-card" style="max-width:440px;">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>🏷️ التحقق من صحة الشهادة</p>
         <div class="gold-line"></div>
       </div>
@@ -606,7 +607,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
 <div id="honorwall-screen" style="display:none;">
   <div style="max-width:900px;margin:0 auto;padding:30px 16px;">
     <div style="text-align:center;margin-bottom:24px;">
-      <h1 class="system-name-text" style="font-size:26px;">مركز الاندلس للتدريب</h1>
+      <h1 class="system-name-text" style="font-size:26px;">أكاديمية النموذج</h1>
       <p style="color:var(--gold);font-weight:800;font-size:18px;">🌟 حائط الشرف</p>
       <div class="gold-line" style="margin:10px auto;"></div>
     </div>
@@ -619,7 +620,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div class="exam-portal-card-wrap">
     <div class="login-card" style="max-width:420px;text-align:center;">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>قناة الأخبار والإعلانات</p>
         <div class="gold-line"></div>
       </div>
@@ -635,7 +636,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div id="pp-login-screen" class="exam-portal-card-wrap">
     <div class="login-card">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>بوابة أولياء الأمور</p>
         <div class="gold-line"></div>
       </div>
@@ -673,7 +674,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
   <div id="tk-login-screen" class="exam-portal-card-wrap">
     <div class="login-card">
       <div class="login-logo">
-        <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
+        <h1 class="system-name-text">أكاديمية النموذج</h1>
         <p>كشك تسجيل الحضور للمدرّس</p>
         <div class="gold-line"></div>
       </div>
@@ -732,8 +733,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <h1 class="system-name-text">مركز الاندلس للتدريب</h1>
-      <p>أكاديمية الأندلس – نظام الإدارة والمتابعة</p>
+      <h1 class="system-name-text">أكاديمية النموذج</h1>
+      <p><span class="system-name-text">أكاديمية النموذج</span> – نظام الإدارة والمتابعة</p>
       <div class="gold-line"></div>
     </div>
     <div class="login-info" id="login-info">
@@ -743,7 +744,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
     <div class="login-error" id="login-error"></div>
     <div class="form-group">
       <label>البريد الإلكتروني</label>
-      <input type="email" id="login-email" placeholder="example@andalus.com" autocomplete="username">
+      <input type="email" id="login-email" placeholder="example@academy.com" autocomplete="username">
       <div class="field-error" id="err-email">أدخل بريد إلكتروني صحيح</div>
     </div>
     <div class="form-group">
@@ -764,7 +765,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
     <div class="topbar-main">
       <div class="logo-area" onclick="showPage('dashboard')">
         <div style="font-size:26px;">🎓</div>
-        <h2 class="system-name-text-br">مركز الاندلس<br>للتدريب</h2>
+        <h2 class="system-name-text-br">أكاديمية<br>النموذج</h2>
       </div>
       <div style="position:relative;flex:1;max-width:420px;margin:0 20px;" id="global-search-wrap">
         <input type="text" id="global-search-input" placeholder="🔍 بحث شامل: طالب، حجز، موظف..." autocomplete="off"
@@ -2323,7 +2324,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div class="form-group2"><label>اسم المستخدم *</label><input type="text" id="e-username" maxlength="50"></div>
         <div class="form-group2"><label>الاسم الكامل</label><input type="text" id="e-fullname" maxlength="100"></div>
-        <div class="form-group2"><label>البريد الإلكتروني *</label><input type="email" id="e-email" placeholder="employee@andalus.local" maxlength="100"></div>
+        <div class="form-group2"><label>البريد الإلكتروني *</label><input type="email" id="e-email" placeholder="employee@academy.com" maxlength="100"></div>
         <div class="form-group2"><label>كلمة المرور * (6 أحرف على الأقل)</label><input type="password" id="e-password" minlength="6"></div>
         <div class="form-group2"><label>الصلاحية</label><select id="e-role"><option value="employee">موظف</option><option value="admin">مدير (Admin)</option></select></div>
         <div class="form-group2"><label>الفرع المخصص</label>
@@ -3091,7 +3092,7 @@ window.sb = sb; // Shared with competition security module
 let currentUser = null;          // user_profiles row
 let currentAuth = null;          // supabase auth user
 let currentSessionId = null;
-let SYSTEM_NAME = 'مركز الاندلس للتدريب'; // قيمة افتراضية، تُستبدل من system_settings عند التحميل
+let SYSTEM_NAME = 'أكاديمية النموذج'; // قيمة افتراضية، تُستبدل من system_settings عند التحميل
 
 /* ============================================================
    الوضع أونلاين/أوفلاين: تسجيل الحضور والتقييمات بدون نت
@@ -7593,7 +7594,7 @@ async function createDismissalDecisionTest() {
   const reasonHtml = reasons.map((x,i) => '<div class="reason"><span class="arrow">➢</span><span>' + esc(x) + '</span></div>').join('');
   const w = window.open('', '_blank');
   if (!w) { showToast('المتصفح منع نافذة المستند؛ اسمح بالنوافذ المنبثقة لهذا الموقع ثم حاول مجددًا.', 'error'); return; }
-  const html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>قرار إداري رقم ' + esc(no) + '</title><style>@page{size:A4;margin:12mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#142c54;line-height:1.75;font-size:14px;margin:0;background:white}.page{min-height:270mm;border:5px double #244a83;padding:18mm 16mm 14mm;position:relative}.top{text-align:center;border-bottom:2px solid #c49a42;padding-bottom:10px;margin-bottom:14px}.brand{font-size:26px;font-weight:bold;color:#173b70}.sub{font-size:12px;color:#9b7628}.title{text-align:center;font-size:20px;font-weight:bold;text-decoration:underline;text-underline-offset:5px;margin:15px 0 20px}.intro{color:#222}.intro p{margin:5px 0}.section{text-align:center;font-weight:bold;font-size:18px;margin:17px 0 8px}.student{text-align:center;font-size:21px;font-weight:bold;color:#164782;margin:12px 0 20px}.reason{display:flex;gap:8px;align-items:flex-start;margin:10px 0;font-weight:bold;color:#163a70}.arrow{color:#b18a37;font-size:18px}.sign{display:flex;justify-content:space-between;align-items:flex-end;margin-top:45px;font-weight:bold;text-align:center}.seal{border:3px double #b28b3e;border-radius:50%;width:85px;height:85px;display:flex;align-items:center;justify-content:center;color:#a17a2c;font-size:11px;padding:10px}.footer{position:absolute;bottom:5mm;left:12mm;right:12mm;text-align:center;border-top:1px solid #c6a35b;padding-top:5px;font-size:10px;color:#5c6680}.date{text-align:left;color:#333;margin:0 0 12px}</style></head><body><div class="page"><div class="top"><div class="brand">الأندلس</div><div class="sub">مركز الأندلس للتدريب</div></div><div class="title">قرار إداري رقم (' + esc(no) + ') لسنة ' + now.getFullYear() + '</div><div class="date">التاريخ: ' + esc(dateText) + '</div><div class="intro"><b>بعد الاطلاع على:</b><p>• النظام الداخلي للمركز المعتمد من مجلس الإدارة.</p><p>• قرار مجلس الإدارة بشأن اللائحة التنفيذية وتنظيم سير العملية التدريبية.</p><p>• اللائحة العامة للتدريب والتأهيل.</p><p>• العقد وبنوده الموقع بين مركز الأندلس والمتدرب.</p><p>• مقتضيات مصلحة العملية التدريبية.</p></div><div class="section">تقرر الآتي:</div><div class="section">فصل المتدرب /</div><div class="student">' + esc(student.name || '') + '</div><b>وذلك للآتي ذكره:</b>' + reasonHtml + '<div class="sign"><div>مدير مركز الأندلس<br><br>د / إسلام صبري العشري</div><div class="seal">ختم<br>مركز الأندلس</div></div><div class="footer">مركز الأندلس للتدريب — قرار إداري داخلي</div></div><scr'+'ipt>window.onload=()=>setTimeout(()=>window.print(),400);</scr'+'ipt>\n</body></html>';
+  const html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>قرار إداري رقم ' + esc(no) + '</title><style>@page{size:A4;margin:12mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#142c54;line-height:1.75;font-size:14px;margin:0;background:white}.page{min-height:270mm;border:5px double #244a83;padding:18mm 16mm 14mm;position:relative}.top{text-align:center;border-bottom:2px solid #c49a42;padding-bottom:10px;margin-bottom:14px}.brand{font-size:26px;font-weight:bold;color:#173b70}.sub{font-size:12px;color:#9b7628}.title{text-align:center;font-size:20px;font-weight:bold;text-decoration:underline;text-underline-offset:5px;margin:15px 0 20px}.intro{color:#222}.intro p{margin:5px 0}.section{text-align:center;font-weight:bold;font-size:18px;margin:17px 0 8px}.student{text-align:center;font-size:21px;font-weight:bold;color:#164782;margin:12px 0 20px}.reason{display:flex;gap:8px;align-items:flex-start;margin:10px 0;font-weight:bold;color:#163a70}.arrow{color:#b18a37;font-size:18px}.sign{display:flex;justify-content:space-between;align-items:flex-end;margin-top:45px;font-weight:bold;text-align:center}.seal{border:3px double #b28b3e;border-radius:50%;width:85px;height:85px;display:flex;align-items:center;justify-content:center;color:#a17a2c;font-size:11px;padding:10px}.footer{position:absolute;bottom:5mm;left:12mm;right:12mm;text-align:center;border-top:1px solid #c6a35b;padding-top:5px;font-size:10px;color:#5c6680}.date{text-align:left;color:#333;margin:0 0 12px}</style></head><body><div class="page"><div class="top"><div class="brand">' + esc(ACADEMY.shortName) + '</div><div class="sub">' + esc(ACADEMY.name) + '</div></div><div class="title">قرار إداري رقم (' + esc(no) + ') لسنة ' + now.getFullYear() + '</div><div class="date">التاريخ: ' + esc(dateText) + '</div><div class="intro"><b>بعد الاطلاع على:</b><p>• النظام الداخلي للمركز المعتمد من مجلس الإدارة.</p><p>• قرار مجلس الإدارة بشأن اللائحة التنفيذية وتنظيم سير العملية التدريبية.</p><p>• اللائحة العامة للتدريب والتأهيل.</p><p>• العقد وبنوده الموقع بين ' + esc(ACADEMY.name) + ' والمتدرب.</p><p>• مقتضيات مصلحة العملية التدريبية.</p></div><div class="section">تقرر الآتي:</div><div class="section">فصل المتدرب /</div><div class="student">' + esc(student.name || '') + '</div><b>وذلك للآتي ذكره:</b>' + reasonHtml + '<div class="sign"><div>مدير ' + esc(ACADEMY.name) + '<br><br>' + esc(ACADEMY.director) + '</div><div class="seal">ختم<br>' + esc(ACADEMY.name) + '</div></div><div class="footer">' + esc(ACADEMY.name) + ' — قرار إداري داخلي</div></div><scr'+'ipt>window.onload=()=>setTimeout(()=>window.print(),400);</scr'+'ipt>\n</body></html>';
   w.document.open(); w.document.write(html); w.document.close();
   const { error } = await sb.from('procedures').insert({
     student_id: currentProfileId,
@@ -7836,25 +7837,36 @@ async function saveEmployee() {
   if (password.length < 6) { showToast('كلمة المرور 6 أحرف على الأقل', 'error'); return; }
   if (phone && !isValidEgyptPhone(phone)) { showToast('رقم الموبايل غير صحيح', 'error'); return; }
 
-  // 1) إنشاء الموظف عبر دالة خادم للأدمن فقط (تنشئ حساب Auth وتضبط الدور والفرع والتفعيل)
-  const { data: created, error: createErr } = await sb.functions.invoke('admin-create-employee', {
-    body: { email, password, username, full_name: fullname, role, branch, phone, qualification, address, hiring_date: hiringDate, salary, commission_amount: commission }
+  // 1) أنشئ المستخدم في Supabase Auth
+  const { data: authData, error: authErr } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { username, full_name: fullname, role, branch },
+      emailRedirectTo: window.location.origin
+    }
   });
-  let createFail = null;
-  if (createErr) {
-    try { createFail = await createErr.context.json(); } catch (_) { createFail = { error: createErr.message }; }
-  } else if (!created || created.ok !== true) {
-    createFail = created || { error: 'create_failed' };
-  }
-  if (createFail) {
-    const code = createFail.error || '';
-    const msg = code === 'already_registered' ? 'الإيميل مسجّل قبل كده'
-      : code === 'username_taken' ? 'اسم المستخدم مستخدم قبل كده'
-      : code === 'forbidden' ? 'غير مسموح: هذه العملية للمدير فقط'
-      : code === 'weak_password' ? 'كلمة المرور 6 أحرف على الأقل'
-      : (createFail.detail || code || 'تعذر إنشاء الموظف');
-    showToast('خطأ: ' + msg, 'error');
+  if (authErr) {
+    showToast('خطأ: ' + (authErr.message.includes('already') ? 'الإيميل مسجّل قبل كده' : authErr.message), 'error');
     return;
+  }
+  // 2) الـ trigger في Supabase هيعمل user_profiles تلقائيًا
+  // 3) تحديث بيانات البروفايل الإضافية
+  if (authData.user) {
+    const updates = {};
+    if (phone) updates.phone = phone;
+    if (qualification) updates.qualification = qualification;
+    if (address) updates.address = address;
+    if (hiringDate) updates.hiring_date = hiringDate;
+    if (salary !== null) updates.salary = salary;
+    if (commission !== null) updates.commission_amount = commission;
+    if (role !== 'employee' || branch !== 'الكل') {
+      updates.role = role;
+      updates.branch = branch;
+    }
+    if (Object.keys(updates).length > 0) {
+      await sb.from('user_profiles').update(updates).eq('id', authData.user.id);
+    }
   }
   await logActivity('add', 'أضاف موظف جديد: ' + username + ' | فرع: ' + branch);
   closeModal('modal-employee');
@@ -8276,7 +8288,7 @@ function buildWordDoc(sections) {
   });
   const html = `<!DOCTYPE html>
 <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta charset="utf-8"><title>مركز الاندلس للتدريب</title>
+<head><meta charset="utf-8"><title>${ACADEMY.esc(ACADEMY.name)}</title>
 <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
 </head>
 <body dir="rtl" style="direction:rtl;text-align:right;">${body}
@@ -8384,7 +8396,7 @@ async function exportStudents() {
   const ws = XLSX.utils.json_to_sheet(buildStudentExportRows(fieldKeys));
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'الطلاب');
-  XLSX.writeFile(wb, 'طلاب_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'طلاب_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export-students-fields');
   showToast('✅ تم التصدير');
 }
@@ -8393,7 +8405,7 @@ async function exportStudentsWord() {
   showToast('جاري التصدير...', 'info');
   const fieldKeys = getSelectedStudentExportFields();
   const rows = buildStudentExportRows(fieldKeys);
-  downloadWordDoc([{ title: 'بيانات الطلاب', rows }], 'طلاب_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'بيانات الطلاب', rows }], 'طلاب_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export-students-fields');
   showToast('✅ تم التصدير');
 }
@@ -8409,7 +8421,7 @@ async function exportAttendance() {
   })));
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'الحضور');
-  XLSX.writeFile(wb, 'حضور_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'حضور_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8423,7 +8435,7 @@ async function exportAttendanceWord() {
     'البرنامج': a.students?.program || '', 'الفرع': a.students?.branch || '',
     'التاريخ': a.date, 'الحالة': a.status
   }));
-  downloadWordDoc([{ title: 'سجل الحضور والغياب', rows }], 'حضور_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'سجل الحضور والغياب', rows }], 'حضور_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8440,7 +8452,7 @@ async function exportGrades() {
   })));
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'الدرجات');
-  XLSX.writeFile(wb, 'درجات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'درجات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8455,7 +8467,7 @@ async function exportGradesWord() {
     'درجة الدور الأول': g.grade_1 ?? '',
     'درجة الدور الثاني': g.grade_2 ?? ''
   }));
-  downloadWordDoc([{ title: 'درجات الطلاب', rows }], 'درجات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'درجات الطلاب', rows }], 'درجات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8475,7 +8487,7 @@ async function exportProcedures() {
   })));
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'الإجراءات');
-  XLSX.writeFile(wb, 'اجراءات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'اجراءات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8493,7 +8505,7 @@ async function exportProceduresWord() {
     'التفاصيل': p.details,
     'النتيجة': p.result || ''
   }));
-  downloadWordDoc([{ title: 'سجل الإجراءات', rows }], 'اجراءات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'سجل الإجراءات', rows }], 'اجراءات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8523,7 +8535,7 @@ async function exportPayments() {
   const ws = XLSX.utils.json_to_sheet(rows);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'أقساط الطلاب');
-  XLSX.writeFile(wb, 'اقساط_الطلاب_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'اقساط_الطلاب_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8550,7 +8562,7 @@ async function exportPaymentsWord() {
       });
     });
   });
-  downloadWordDoc([{ title: 'أقساط الطلاب', rows }], 'اقساط_الطلاب_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'أقساط الطلاب', rows }], 'اقساط_الطلاب_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8576,7 +8588,7 @@ async function exportRevenue() {
   const ws = XLSX.utils.json_to_sheet(buildRevenueRows());
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'الإيرادات');
-  XLSX.writeFile(wb, 'الإيرادات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'الإيرادات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8584,7 +8596,7 @@ async function exportRevenue() {
 async function exportRevenueWord() {
   showToast('جاري التصدير...', 'info');
   if (!Object.keys(allPayments).length) await loadPayments();
-  downloadWordDoc([{ title: 'ملخص الإيرادات', rows: buildRevenueRows() }], 'الإيرادات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'ملخص الإيرادات', rows: buildRevenueRows() }], 'الإيرادات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8601,7 +8613,7 @@ async function exportExpenses() {
   const ws = XLSX.utils.json_to_sheet(rows);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'مصروفات المركز');
-  XLSX.writeFile(wb, 'مصروفات_المركز_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'مصروفات_المركز_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8614,7 +8626,7 @@ async function exportExpensesWord() {
     'التاريخ': e.expense_date || '', 'البند': e.item || '', 'القيمة': e.amount || 0,
     'الفرع': e.branch || '', 'أضيف بواسطة': getExpenseActorLabel(e.created_by), 'يخصم من الإجمالي': e.deduct === false ? 'لا' : 'نعم', 'ملاحظات': e.notes || ''
   }));
-  downloadWordDoc([{ title: 'مصروفات المركز', rows }], 'مصروفات_المركز_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'مصروفات المركز', rows }], 'مصروفات_المركز_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8636,7 +8648,7 @@ async function exportSessions() {
   const ws = XLSX.utils.json_to_sheet(rows);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'المحاضرات');
-  XLSX.writeFile(wb, 'جدول_المحاضرات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, 'جدول_المحاضرات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8646,7 +8658,7 @@ async function exportSessionsWord() {
   if (!allSessions.length) await loadSchedule();
   const rows = buildSessionExportRows();
   if (!rows.length) { showToast('لا توجد بيانات', 'error'); return; }
-  downloadWordDoc([{ title: 'جدول المحاضرات', rows }], 'جدول_المحاضرات_الاندلس_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc([{ title: 'جدول المحاضرات', rows }], 'جدول_المحاضرات_' + ACADEMY.fileTag + '_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   showToast('✅ تم التصدير');
 }
@@ -8756,7 +8768,7 @@ async function exportAll() {
     'الموظف': l.username, 'النشاط': l.action, 'التفاصيل': l.details,
     'الوقت': new Date(l.created_at).toLocaleString('ar-EG')
   }))), 'سجل النشاط');
-  XLSX.writeFile(wb, 'الاندلس_كامل_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
+  XLSX.writeFile(wb, ACADEMY.fileTag + '_كامل_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
   localStorage.setItem('andalus_last_full_backup', new Date().toISOString());
   showToast('✅ تم تصدير كل البيانات');
@@ -8845,7 +8857,7 @@ async function exportAllWord() {
     'الوقت': new Date(l.created_at).toLocaleString('ar-EG')
   })) });
 
-  downloadWordDoc(sections, 'الاندلس_كامل_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
+  downloadWordDoc(sections, ACADEMY.fileTag + '_كامل_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
   localStorage.setItem('andalus_last_full_backup', new Date().toISOString());
   showToast('✅ تم تصدير كل البيانات');
@@ -8890,7 +8902,7 @@ function filterLeads() {
 }
 
 function documentsRequiredMessage(name) {
-  return `السلام عليكم ${name}\nبرجاء التوجه إلى فرع ${SYSTEM_NAME} لاستكمال إجراءات التقديم، ومعكم:\n\n• ملف بلاستيك\n• الأوراق المتاحة من الأوراق المطلوبة\n• 350 ج رسوم فتح الملف\n\n📢 *الأوراق المطلوبة للتقديم في أكاديمية الأندلس* 🏫✨\n📌 *للتسجيل، يرجى إحضار المستندات التالية:*\n👈 *1️⃣* *عدد (3) صور من شهادة النجاح أو المؤهل الدراسي* 🎓\n👈 *2️⃣* *أصل شهادة الميلاد + (3) صور لها* 📄\n👈 *3️⃣* *صورة البطاقة الشخصية لولي الأمر (الأب أو الأم أو الزوج)* 🆔\n👈 *4️⃣* *عدد (6) صور شخصية للطالب أو الطالبة* 📷\n👈 *5️⃣* *ملف التقديم والالتحاق من مقر الأكاديمية* 📂\n\n${SYSTEM_NAME}`;
+  return `السلام عليكم ${name}\nبرجاء التوجه إلى فرع ${SYSTEM_NAME} لاستكمال إجراءات التقديم، ومعكم:\n\n• ملف بلاستيك\n• الأوراق المتاحة من الأوراق المطلوبة\n• 350 ج رسوم فتح الملف\n\n📢 *الأوراق المطلوبة للتقديم في ${SYSTEM_NAME}* 🏫✨\n📌 *للتسجيل، يرجى إحضار المستندات التالية:*\n👈 *1️⃣* *عدد (3) صور من شهادة النجاح أو المؤهل الدراسي* 🎓\n👈 *2️⃣* *أصل شهادة الميلاد + (3) صور لها* 📄\n👈 *3️⃣* *صورة البطاقة الشخصية لولي الأمر (الأب أو الأم أو الزوج)* 🆔\n👈 *4️⃣* *عدد (6) صور شخصية للطالب أو الطالبة* 📷\n👈 *5️⃣* *ملف التقديم والالتحاق من مقر الأكاديمية* 📂\n\n${SYSTEM_NAME}`;
 }
 
 function renderLeads(list) {
@@ -13283,7 +13295,7 @@ function renderStudentLoginNotificationDialog() {
           <span style="font-size:12px;color:${accent};font-weight:900;">🔔 ${label}</span>
           <span style="font-size:11px;color:#64748b;">${studentLoginNotificationQueue.length > 1 ? 'عدد الإشعارات المهمة: ' + studentLoginNotificationQueue.length : 'يرجى المراجعة'}</span>
         </div>
-        <h2 id="student-login-notice-title" style="margin:10px 0 0;color:#172554;font-size:21px;line-height:1.6;">${escapeHtml(n.title || 'إشعار مهم من مركز الأندلس')}</h2>
+        <h2 id="student-login-notice-title" style="margin:10px 0 0;color:#172554;font-size:21px;line-height:1.6;">${escapeHtml(n.title || ('إشعار مهم من ' + ACADEMY.name))}</h2>
       </div>
       <div style="padding:20px;">
         <div style="font-size:15px;line-height:2;white-space:pre-wrap;color:#334155;">${escapeHtml(n.body || '')}</div>
@@ -14142,7 +14154,7 @@ async function renderAlbumPhotos() {
   gridEl.innerHTML = photos.length ? photos.map((p,i) => {
     const url=String(p.photo_url||'');
     const safeUrl=escapeHtml(url);
-    const shareText=encodeURIComponent('صورة من ألبوم مركز الأندلس للتدريب');
+    const shareText=encodeURIComponent('صورة من ألبوم '+ACADEMY.name);
     return '<div class="card" style="position:relative;margin:0;overflow:hidden;padding:0;border-radius:12px;">'+
       '<label style="display:flex;gap:7px;align-items:center;padding:8px 10px;font-size:12px;cursor:pointer"><input type="checkbox" class="album-photo-select" value="'+escapeHtml(p.id)+'" data-url="'+safeUrl+'" data-index="'+i+'" onchange="updateAlbumSelectionCount()"> تحديد الصورة</label>'+
       '<a href="'+safeUrl+'" target="_blank" rel="noopener" title="فتح الصورة بالحجم الكامل"><img src="'+safeUrl+'" alt="صورة الألبوم" loading="lazy" style="width:100%;height:175px;object-fit:cover;display:block;"></a>'+
@@ -14166,7 +14178,7 @@ function toggleSelectAllAlbumPhotos(){
   const all=boxes.every(x=>x.checked);boxes.forEach(x=>x.checked=!all);updateAlbumSelectionCount();
 }
 function shareAlbumPhoto(url,platform){
-  const text=encodeURIComponent('صورة من ألبوم مركز الأندلس للتدريب');
+  const text=encodeURIComponent('صورة من ألبوم '+ACADEMY.name);
   const u=encodeURIComponent(url);
   let target='';
   if(platform==='facebook')target='https://www.facebook.com/sharer/sharer.php?u='+u;
@@ -16514,7 +16526,7 @@ async function renderStudentStudySummaryQuestion(){
         <div style="border-top:1px dashed var(--border);padding-top:12px"><div style="font-size:12px;color:#0f766e;font-weight:900;margin-bottom:5px">الإجابة النموذجية</div><div style="font-size:14px;white-space:pre-wrap;line-height:2">${ssEsc(q.answer_text)}</div>
         ${q.explanation?'<div style="margin-top:12px;background:#f8fafc;border-radius:8px;padding:10px;font-size:12px;line-height:1.8"><strong>توضيح:</strong> '+ssEsc(q.explanation)+'</div>':''}
         </div>
-        <div style="margin-top:18px;padding:8px;border:1px dashed #cbd5e1;border-radius:8px;text-align:center;font-size:10px;color:#64748b;pointer-events:none">نسخة مخصصة للطالب: ${ssEsc(unifiedPortalStudent?.name||unifiedPortalStudent?.student_name||'طالب')} · رقم القيد: ${ssEsc(unifiedPortalStudent?.enrollment_number||unifiedPortalStudent?.id||'غير متاح')} — مركز الأندلس للتدريب</div>
+        <div style="margin-top:18px;padding:8px;border:1px dashed #cbd5e1;border-radius:8px;text-align:center;font-size:10px;color:#64748b;pointer-events:none">نسخة مخصصة للطالب: ${ssEsc(unifiedPortalStudent?.name||unifiedPortalStudent?.student_name||'طالب')} · رقم القيد: ${ssEsc(unifiedPortalStudent?.enrollment_number||unifiedPortalStudent?.id||'غير متاح')} — ${ACADEMY.esc(ACADEMY.name)}</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-outline" style="flex:1" ${data.question_number<=1?'disabled':''} onclick="changeStudySummaryQuestion(-1)">السابق</button><button class="btn btn-gold" style="flex:1" ${data.question_number>=data.total?'disabled':''} onclick="changeStudySummaryQuestion(1)">التالي</button></div>
@@ -16537,7 +16549,7 @@ async function renderStudentStudySummaryQuestion(){
     wm.setAttribute('aria-hidden','true');
     const wmName=unifiedPortalStudent?.name||unifiedPortalStudent?.student_name||unifiedPortalStudent?.full_name;
     const wmNumber=unifiedPortalStudent?.enrollment_number||unifiedPortalStudent?.registration_number||unifiedPortalStudent?.student_code||unifiedPortalStudent?.code;
-    wm.textContent='مركز الأندلس للتدريب · '+String(wmName&&String(wmName)!=='0'?wmName:'نسخة مخصصة')+' · رقم القيد '+String(wmNumber&&String(wmNumber)!=='0'?wmNumber:'غير متاح');
+    wm.textContent=ACADEMY.name+' · '+String(wmName&&String(wmName)!=='0'?wmName:'نسخة مخصصة')+' · رقم القيد '+String(wmNumber&&String(wmNumber)!=='0'?wmNumber:'غير متاح');
     box.appendChild(wm);
   }
   if(!window.__studySummaryProtectionInstalled){
