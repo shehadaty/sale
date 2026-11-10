@@ -1,4 +1,4 @@
-/* Andalus Academy — Daily Revenue UI Fix
+/* Academy System — Daily Revenue UI Fix
    Rule: only entries whose details contain "قسط" count in the daily-revenue total.
    Every entry is still kept in the daily revenue log and is synced to the student's file by the DB trigger.
 */

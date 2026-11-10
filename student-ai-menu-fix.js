@@ -1,4 +1,4 @@
-/* Andalus student AI tile integration fix */
+/* Academy student AI tile integration fix */
 (function(){
   'use strict';
   const TILE_ID='student-ai-portal-tile';
@@ -28,11 +28,11 @@
   }
   function watch(){
     addTile();
-    if(!window.__andalusAiTileObserver){
+    if(!window.__academyAiTileObserver){
       const root=document.querySelector('#student-portal-content')||document.body;
       const observer=new MutationObserver(function(){addTile()});
       observer.observe(root,{childList:true,subtree:true});
-      window.__andalusAiTileObserver=observer;
+      window.__academyAiTileObserver=observer;
     }
     let tries=0;
     const timer=setInterval(function(){
@@ -42,13 +42,13 @@
   function start(){
     watch();
     const original=window.renderStudentPortalMenu;
-    if(typeof original==='function'&&!original.__andalusAiMenuWrapped){
+    if(typeof original==='function'&&!original.__academyAiMenuWrapped){
       const wrapped=function(){
         const result=original.apply(this,arguments);
         setTimeout(addTile,0);
         return result;
       };
-      wrapped.__andalusAiMenuWrapped=true;
+      wrapped.__academyAiMenuWrapped=true;
       window.renderStudentPortalMenu=wrapped;
     }
     setTimeout(watch,500);

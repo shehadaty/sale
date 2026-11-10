@@ -88,7 +88,8 @@ Deno.serve(async (req: Request) => {
       ? `{"type":"true_false","question":"نص العبارة","options":["صح","خطأ"],"answer":"صح","explanation":"شرح مختصر","difficulty":"${difficulty}"}`
       : `{"type":"essay","question":"نص السؤال المقالي","answer":"نموذج إجابة مختصر","explanation":"معايير أو نقاط التصحيح","difficulty":"${difficulty}"}`;
 
-    const prompt = `أنت خبير إعداد امتحانات لمركز الأندلس للتدريب.
+    const academyName = await getAcademyName(sb);
+    const prompt = `أنت خبير إعداد امتحانات لـ${academyName}.
 اعتمد على ملفات PDF المرفقة فقط.
 المادة: ${subject}
 عدد الأسئلة المطلوب: ${count}
@@ -141,3 +142,11 @@ ${typeInstructions}
     return reply({ error: "حدث خطأ أثناء معالجة طلب الامتحان.", details: error instanceof Error ? error.message : String(error) }, 500);
   }
 });
+
+async function getAcademyName(db: any): Promise<string> {
+  try {
+    const { data } = await db.from("system_settings").select("value").eq("key", "system_name").maybeSingle();
+    const v = String(data?.value || "").trim();
+    return v || "الأكاديمية";
+  } catch (_) { return "الأكاديمية"; }
+}

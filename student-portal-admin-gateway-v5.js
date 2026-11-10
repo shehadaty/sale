@@ -1,9 +1,9 @@
-/* Andalus unified Student Portal admin gateway */
+/* Academy unified Student Portal admin gateway */
 (() => {
   'use strict';
-  const GATEWAY_ID = 'andalus-student-portal-gateway-nav';
-  const MODAL_ID = 'andalus-student-portal-gateway-modal';
-  const AI_MODAL_ID = 'andalus-student-ai-admin-dashboard';
+  const GATEWAY_ID = 'academy-student-portal-gateway-nav';
+  const MODAL_ID = 'academy-student-portal-gateway-modal';
+  const AI_MODAL_ID = 'academy-student-ai-admin-dashboard';
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const sbc = () => window.sb || null;
   const fmtDate = (v) => v ? new Date(v).toLocaleString('ar-EG') : '—';
@@ -45,7 +45,7 @@
     if(!summaryOriginalHome) summaryOriginalHome={parent:page.parentNode,next:page.nextSibling,style:page.getAttribute('style'),className:page.className};
     enterStandalonePage(host);
     host.innerHTML='';
-    page.classList.add('andalus-summary-standalone');
+    page.classList.add('academy-summary-standalone');
     page.style.cssText='display:block!important;position:relative!important;inset:auto!important;width:100%!important;max-width:none!important;min-height:100dvh;margin:0!important;padding:18px!important;box-sizing:border-box;overflow:visible!important;background:#f1f5f9;';
     host.appendChild(page);
     if(typeof window.showPage==='function') window.showPage('study-summaries');
@@ -54,7 +54,7 @@
     page.style.display='block';
     const back=document.createElement('button');
     back.type='button';
-    back.id='andalus-summary-back-to-dashboard';
+    back.id='academy-summary-back-to-dashboard';
     back.className='btn btn-outline';
     back.textContent='↩ رجوع لبوابة الطلاب';
     back.style.cssText='display:block;position:sticky;top:8px;z-index:1000;margin:0 0 14px auto;padding:10px 18px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;font-weight:700;';
@@ -81,7 +81,7 @@
       </div>`;
   }
 
-  const INTERNAL_ID = 'andalus-student-gateway-page';
+  const INTERNAL_ID = 'academy-student-gateway-page';
   function internalHost() {
     let host = document.getElementById(INTERNAL_ID);
     if (host) return host;
@@ -92,9 +92,9 @@
     return host;
   }
   function enterStandalonePage(host) {
-    if (!document.getElementById('andalus-gateway-standalone-style')) {
+    if (!document.getElementById('academy-gateway-standalone-style')) {
       const style=document.createElement('style');
-      style.id='andalus-gateway-standalone-style';
+      style.id='academy-gateway-standalone-style';
       style.textContent='body.and-alus-gateway-standalone{overflow:hidden!important} body.and-alus-gateway-standalone > :not(#'+INTERNAL_ID+'){display:none!important} #'+INTERNAL_ID+'{display:block!important} #'+INTERNAL_ID+' > .card{min-height:100dvh;border:0;border-radius:0!important}';
       document.head.appendChild(style);
     }
@@ -119,11 +119,11 @@
   function openGateway() { showGatewayHome(); }
 
   function installNav() {
-    const card = document.getElementById('andalus-student-gateway-card') ||
+    const card = document.getElementById('academy-student-gateway-card') ||
       [...document.querySelectorAll('#nav-cards-grid .nav-card')].find(el => /مكتبة\\s*ملخصات\\s*الامتحانات/.test(el.textContent || ''));
     if (!card) return false;
     if (card.dataset.portalGatewayReady === '1' && /بوابة الطلاب/.test(card.textContent || '')) return true;
-    card.id = 'andalus-student-gateway-card';
+    card.id = 'academy-student-gateway-card';
     card.dataset.portalGatewayReady = '1';
     card.classList.add('admin-only');
     card.innerHTML = '<span class="nav-card-icon">🎓</span><span>بوابة الطلاب</span>';
@@ -235,6 +235,6 @@
     observer.observe(document.body,{childList:true,subtree:true});
     setTimeout(installNav,500);setTimeout(installNav,1500);setTimeout(installNav,3000);
   }
-  window.openAndalusStudentGateway = openGateway;
+  window.openAcademyStudentGateway = openGateway;
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true}); else start();
 })();

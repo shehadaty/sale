@@ -1,4 +1,4 @@
-/* Andalus Academy — achievements and trainee ranking. Loaded after index.html main script. */
+/* Academy System — achievements and trainee ranking. Loaded after index.html main script. */
 let adminAchievementRows = [];
 const ACH_TYPE_LABELS = { academic: 'تفوق دراسي', attendance: 'حضور والتزام', course: 'إتمام دورة', activity: 'نشاط ومشاركة', general: 'إنجاز عام' };
 

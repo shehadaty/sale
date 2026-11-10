@@ -1,4 +1,4 @@
-/* Andalus Academy — student/parent complaints and requests workflow. */
+/* Academy System — student/parent complaints and requests workflow. */
 (() => {
   const $ = id => document.getElementById(id);
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({

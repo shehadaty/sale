@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const NAV='andalus-student-portal-gateway-v4',BOX='andalus-student-portal-gateway-v4',AI='andalus-student-ai-admin-v4';
+const NAV='academy-student-portal-gateway-v4',BOX='academy-student-portal-gateway-v4',AI='academy-student-ai-admin-v4';
 const close=()=>document.getElementById(BOX)?.remove();
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function summaryNodes(){return [...document.querySelectorAll('button,a,[role="button"],.nav-item,.sidebar-item,.menu-item,li,div')].filter(e=>/مكتبة\s*ملخصات\s*الامتحانات/.test((e.textContent||'').trim())).filter(e=>e.children.length<8)}

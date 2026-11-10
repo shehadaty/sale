@@ -1,6 +1,6 @@
-/* Andalus Student Portal admin gateway v3 */
+/* Academy Student Portal admin gateway v3 */
 (()=>{'use strict';
-const NAV='andalus-student-portal-gateway-v3',BOX='andalus-student-portal-gateway-v3',AI='andalus-student-ai-admin-v3';
+const NAV='academy-student-portal-gateway-v3',BOX='academy-student-portal-gateway-v3',AI='academy-student-ai-admin-v3';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const close=()=>document.getElementById(BOX)?.remove();
 function findSummary(){return [...document.querySelectorAll('.sidebar-nav .nav-item,button,.nav-item')].find(e=>/مكتبة ملخصات الامتحانات|ملخصات الامتحانات/.test(e.textContent||''))}

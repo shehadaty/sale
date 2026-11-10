@@ -1,4 +1,4 @@
-/* Andalus student portal: real screen-to-screen navigation.
+/* Academy student portal: real screen-to-screen navigation.
    Keep feature screens separate from the student menu and never sign out on back. */
 (function () {
   'use strict';
@@ -64,7 +64,7 @@
   }
 
   function setExamBackLabel() {
-    const back = document.getElementById('andalus-global-back');
+    const back = document.getElementById('academy-global-back');
     if (back) {
       if (back.innerHTML !== '↩ <span>عودة إلى البوابة</span>') back.innerHTML = '↩ <span>عودة إلى البوابة</span>';
       back.setAttribute('aria-label', 'عودة إلى بوابة الطالب');
@@ -72,7 +72,7 @@
   }
 
   function installLeagueEntry() {
-    if (window.__andalusDirectLeagueScreenInstalled || typeof window.goToPortalWeeklyQuiz !== 'function') return;
+    if (window.__academyDirectLeagueScreenInstalled || typeof window.goToPortalWeeklyQuiz !== 'function') return;
     const original = window.goToPortalWeeklyQuiz;
     window.goToPortalWeeklyQuiz = async function () {
       enterFeature('league');
@@ -80,11 +80,11 @@
       enterFeature('league');
       return result;
     };
-    window.__andalusDirectLeagueScreenInstalled = true;
+    window.__academyDirectLeagueScreenInstalled = true;
   }
 
   function installExamLogoutGuard() {
-    if (window.__andalusExamLogoutGuardInstalled) return;
+    if (window.__academyExamLogoutGuardInstalled) return;
     if (typeof window.examStudentLogout === 'function') {
       const original = window.examStudentLogout;
       window.examStudentLogout = function () {
@@ -92,16 +92,16 @@
         else return original.apply(this, arguments);
       };
     }
-    window.__andalusExamLogoutGuardInstalled = true;
+    window.__academyExamLogoutGuardInstalled = true;
   }
 
   function replaceExamLogoutButtons() {
     if (!visible(document.querySelector(EXAM))) return;
     document.querySelectorAll('button,a,[role="button"]').forEach(function (el) {
       const label = (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim();
-      if (!/تسجيل\s+الخروج/.test(label) || el.dataset.andalusReturnButton === '1') return;
+      if (!/تسجيل\s+الخروج/.test(label) || el.dataset.academyReturnButton === '1') return;
       el.textContent = '↩ عودة إلى البوابة';
-      el.dataset.andalusReturnButton = '1';
+      el.dataset.academyReturnButton = '1';
       el.setAttribute('aria-label', 'عودة إلى بوابة الطالب');
       el.onclick = null;
       el.addEventListener('click', function (event) {
@@ -118,7 +118,7 @@
     const control = event.target && event.target.closest
       ? event.target.closest('button,a,[role="button"]') : null;
     if (!control || !visible(document.querySelector(EXAM))) return;
-    if (control.id === 'andalus-global-back' || control.closest('#andalus-global-back')) {
+    if (control.id === 'academy-global-back' || control.closest('#academy-global-back')) {
       event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation(); returnToPortal(); return;
     }
     const label = (control.innerText || control.textContent || '').replace(/\s+/g, ' ').trim();
@@ -143,7 +143,7 @@
       const portal = document.querySelector(PORTAL);
       if (visible(portal)) {
         view = 'portal';
-        const back = document.getElementById('andalus-global-back');
+        const back = document.getElementById('academy-global-back');
         if (back) if (back.innerHTML !== '← <span>رجوع</span>') back.innerHTML = '← <span>رجوع</span>';
       }
     }
@@ -172,13 +172,13 @@
   // The document-level capture handler above also intercepts the fixed global back button.
   // Recheck late-defined globals because legacy portal scripts may load after this file.
   function installBackOverride() {
-    const oldBack = window.andalusGoBack;
-    if (typeof oldBack !== 'function' || window.__andalusExamBackScreenInstalled) return;
-    window.andalusGoBack = function () {
+    const oldBack = window.academyGoBack;
+    if (typeof oldBack !== 'function' || window.__academyExamBackScreenInstalled) return;
+    window.academyGoBack = function () {
       if (visible(document.querySelector(EXAM))) return returnToPortal();
       return oldBack.apply(this, arguments);
     };
-    window.__andalusExamBackScreenInstalled = true;
+    window.__academyExamBackScreenInstalled = true;
   }
   installBackOverride();
   window.setInterval(installBackOverride, 250);

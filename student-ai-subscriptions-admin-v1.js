@@ -1,7 +1,7 @@
-/* Andalus AI Tutor — unified subscription management */
+/* Academy AI Tutor — unified subscription management */
 (() => {
   'use strict';
-  const MODAL_ID='andalus-ai-subscription-management';
+  const MODAL_ID='academy-ai-subscription-management';
   const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
   const sbc=()=>window.sb||null;
   const fmtDate=v=>v?new Date(v).toLocaleString('ar-EG'):'—';
@@ -134,5 +134,5 @@
   const mo=new MutationObserver(ensureButton);
   function start(){ensureButton();mo.observe(document.body,{childList:true,subtree:true});}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
-  window.openAndalusAiSubscriptionManagement=openManagement;
+  window.openAcademyAiSubscriptionManagement=openManagement;
 })();

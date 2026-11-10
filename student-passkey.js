@@ -1,4 +1,4 @@
-/* Andalus Student Portal compatibility shim — Passkey disabled.
+/* Academy Student Portal compatibility shim — Passkey disabled.
  * Student login remains on the existing student_device_auth flow.
  * This file intentionally does not call WebAuthn or wrap the login/token functions.
  */
@@ -9,10 +9,10 @@
 
   // Preserve the shared back-navigation behavior previously loaded here.
   function loadGlobalBackNavigation() {
-    if (document.querySelector('script[data-andalus-global-back]')) return;
+    if (document.querySelector('script[data-academy-global-back]')) return;
     const script = document.createElement('script');
     script.src = './global-back-navigation.js?v=1';
-    script.dataset.andalusGlobalBack = '1';
+    script.dataset.academyGlobalBack = '1';
     script.defer = true;
     document.head.appendChild(script);
   }

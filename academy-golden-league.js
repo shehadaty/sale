@@ -1,4 +1,4 @@
-/* Andalus Golden League runtime overrides.
+/* Academy Golden League runtime overrides.
    Loaded after the legacy portal scripts. Server RPCs are authoritative for time, score and qualification. */
 (function () {
   'use strict';
@@ -81,7 +81,7 @@
       };
       window.renderWeeklyQuizHome(myScore, league.leaderboard || [], league);
     } catch (e) {
-      console.error('Andalus Golden League:', e);
+      console.error('Academy Golden League:', e);
       box.innerHTML = '<div role="alert" style="text-align:center;padding:20px;color:#991b1b;">' +
         escapeHtml(e && e.message || 'تعذر تحميل الدوري') +
         '</div><button class="btn btn-gold" style="width:100%;" onclick="goToPortalWeeklyQuiz()">إعادة التحقق والدخول</button>';
@@ -148,7 +148,7 @@
       '</style>' +
       '<button class="btn btn-outline btn-sm" style="margin-bottom:12px;" onclick="backToPortalFromWeeklyQuiz()">◀ رجوع</button>' +
       '<section class="agl-shell">' +
-      '<header class="agl-head"><div class="agl-kicker">ANDALUS GOLDEN LEAGUE</div><div class="agl-title">🏆 الدوري الذهبي</div><div class="agl-subtitle">المعرفة منافسة، والتميز بطولة</div></header>' +
+      '<header class="agl-head"><div class="agl-kicker">ACADEMY GOLDEN LEAGUE</div><div class="agl-title">🏆 الدوري الذهبي</div><div class="agl-subtitle">المعرفة منافسة، والتميز بطولة</div></header>' +
       '<div class="agl-my-score">' +
       '<div class="agl-stat"><strong>' + Number(myScore.total_points || 0) + '</strong><span>نقاط الأسبوع</span></div>' +
       '<div class="agl-stat"><strong>' + Number(myScore.month_points || 0) + '</strong><span>نقاط الشهر</span></div>' +
@@ -490,7 +490,7 @@
   // Student portal polish and direct entry to the leaderboard tab.
   (function installGoldenLeaguePortalPolish(){
     const css=document.createElement('style');
-    css.id='andalus-golden-league-portal-polish';
+    css.id='academy-golden-league-portal-polish';
     css.textContent=`
       #student-portal-card{max-width:760px!important;width:min(100%,760px)!important}
       #student-portal-content .student-portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}

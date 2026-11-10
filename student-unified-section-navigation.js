@@ -1,16 +1,16 @@
-/* Andalus Academy — unified student section navigation. */
+/* Academy System — unified student section navigation. */
 (function () {
   'use strict';
-  if (window.__andalusUnifiedStudentSectionsV1) return;
-  window.__andalusUnifiedStudentSectionsV1 = true;
+  if (window.__academyUnifiedStudentSectionsV1) return;
+  window.__academyUnifiedStudentSectionsV1 = true;
 
   // Compatibility repair: the live project was using a stale Supabase API key.
   (function repairSupabaseApiKey(){
     const VALID_PUBLISHABLE_KEY=window.ACADEMY_CONFIG.supabaseKey;
     const PROJECT_HOST=new URL(window.ACADEMY_CONFIG.supabaseUrl).host;
     const originalFetch=window.fetch;
-    if(typeof originalFetch!=='function' || window.__andalusSupabaseApiKeyRepairV1) return;
-    window.__andalusSupabaseApiKeyRepairV1=true;
+    if(typeof originalFetch!=='function' || window.__academySupabaseApiKeyRepairV1) return;
+    window.__academySupabaseApiKeyRepairV1=true;
     window.fetch=function(input, init){
       let url='';
       try { url=typeof input==='string' ? input : (input && input.url) || ''; } catch(_) {}
@@ -54,9 +54,9 @@
     return true;
   }
   function addBack(root, type) {
-    if (!root || root.querySelector('[data-andalus-section-back="'+type+'"]')) return;
+    if (!root || root.querySelector('[data-academy-section-back="'+type+'"]')) return;
     const b = document.createElement('button');
-    b.type='button'; b.className='btn btn-outline'; b.dataset.andalusSectionBack=type;
+    b.type='button'; b.className='btn btn-outline'; b.dataset.academySectionBack=type;
     b.textContent='← الرجوع إلى بوابة الطالب';
     b.style.cssText='display:block;width:100%;margin:0 auto 12px;max-width:480px;';
     b.addEventListener('click', backToStudentMenu);
@@ -87,8 +87,8 @@
   function watchTutorTile(){
     syncTutorTile();
     const root=document.getElementById('student-portal-screen');
-    if(!root || root.__andalusTutorTileWatcher) return;
-    root.__andalusTutorTileWatcher=true;
+    if(!root || root.__academyTutorTileWatcher) return;
+    root.__academyTutorTileWatcher=true;
     new MutationObserver(function(){syncTutorTile()}).observe(root,{childList:true,subtree:true});
   }
 
@@ -133,8 +133,8 @@
     originalOpenStudentRequestForm();
     const modal=document.getElementById('student-request-submit-modal'), box=content();
     if(!modal||!box||!unifiedPortalStudent||!unifiedPortalPhone) return;
-    box.innerHTML='<button type="button" class="btn btn-outline" data-andalus-request-back="1" style="width:100%;margin-bottom:12px;">← الرجوع إلى بوابة الطالب</button>';
-    box.querySelector('[data-andalus-request-back]').addEventListener('click',backToStudentMenu);
+    box.innerHTML='<button type="button" class="btn btn-outline" data-academy-request-back="1" style="width:100%;margin-bottom:12px;">← الرجوع إلى بوابة الطالب</button>';
+    box.querySelector('[data-academy-request-back]').addEventListener('click',backToStudentMenu);
     modal.style.cssText='position:relative;inset:auto;z-index:auto;background:transparent;display:block;align-items:initial;justify-content:initial;padding:0;direction:rtl;';
     box.appendChild(modal);
     const history=document.createElement('div'); history.id='student-portal-requests'; history.style.marginTop='14px'; box.appendChild(history);

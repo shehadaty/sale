@@ -1,7 +1,7 @@
-/* Andalus unified Student Portal admin gateway v2 */
+/* Academy unified Student Portal admin gateway v2 */
 (()=>{
 'use strict';
-const NAV='andalus-student-portal-gateway-nav-v2',BOX='andalus-student-portal-gateway-v2',AI='andalus-student-ai-admin-v2';
+const NAV='academy-student-portal-gateway-nav-v2',BOX='academy-student-portal-gateway-v2',AI='academy-student-ai-admin-v2';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sb=()=>window.sb||null;
 const dt=v=>v?new Date(v).toLocaleString('ar-EG'):'—';

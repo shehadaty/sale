@@ -10,7 +10,7 @@
 </script>
 <meta name="theme-color" content="#1a2a4a">
 <meta name="description" content="نظام إدارة الأكاديمية">
-<meta name="andalus-build" content="direct-portal-v30">
+<meta name="academy-build" content="direct-portal-v30">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231a2a4a'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='%23c9a84c' font-family='Arial'>A</text></svg>">
 <title>نظام إدارة الأكاديمية</title>
@@ -823,7 +823,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
         <div id="page-dashboard" class="page active">
           <div class="nav-cards-grid no-print" id="nav-cards-grid">
             <div class="nav-card c4" onclick="showPage('students')"><span class="nav-card-icon">👨‍🎓</span><span>الطلاب</span></div>
-            <div class="nav-card c5 admin-only" id="andalus-student-gateway-card" style="background:linear-gradient(135deg,#1e3a8a,#0f766e);cursor:pointer;"><span class="nav-card-icon">🎓</span><span>بوابة الطلاب</span></div>
+            <div class="nav-card c5 admin-only" id="academy-student-gateway-card" style="background:linear-gradient(135deg,#1e3a8a,#0f766e);cursor:pointer;"><span class="nav-card-icon">🎓</span><span>بوابة الطلاب</span></div>
             <div class="nav-card c12 admin-only" onclick="showPage('achievements');loadAchievementsAdmin()"><span class="nav-card-icon">🏅</span><span>إنجازات وترتيب المتدربين</span></div>
             <div class="nav-card c12 admin-only" onclick="showPage('requests');loadStudentRequestsAdmin()"><span class="nav-card-icon">🎫</span><span>الشكاوى والطلبات</span></div>
             <div class="nav-card c12 admin-only" onclick="showPage('notifications');loadNotificationsAdmin()"><span class="nav-card-icon">🔔</span><span>مركز التنبيهات</span></div>
@@ -3078,7 +3078,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
 
 <script>
 /* ============================================================
-   ANDALUS ACADEMY — v6.6 (... + الإيراد اليومي بدل دفتر الخزنة + حذف الإحالات والعمولات + تسجيل نشاط أدق)
+   ACADEMY SYSTEM — v6.6 (... + الإيراد اليومي بدل دفتر الخزنة + حذف الإحالات والعمولات + تسجيل نشاط أدق)
    ============================================================ */
 
 const SUPABASE_URL = window.ACADEMY_CONFIG.supabaseUrl;
@@ -3098,7 +3098,7 @@ let SYSTEM_NAME = 'أكاديمية النموذج'; // قيمة افتراضي�
    الوضع أونلاين/أوفلاين: تسجيل الحضور والتقييمات بدون نت
    وتزامن تلقائي لما النت يرجع
    ============================================================ */
-const OFFLINE_QUEUE_KEY = 'andalus_offline_queue_v1';
+const OFFLINE_QUEUE_KEY = 'academy_offline_queue_v1';
 
 function getOfflineQueue() {
   try { return JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]'); }
@@ -3217,8 +3217,8 @@ window.addEventListener('offline', () => { updateOfflineStatusUI(); showToast('�
    تخزين نسخة محلية من البيانات الأساسية للمشاهدة وانت أوفلاين
    (طلاب، مدفوعات...) — تتحدّث تلقائيًا كل ما تفتح الصفحة أونلاين
    ============================================================ */
-const LOCAL_CACHE_PREFIX = 'andalus_cache_';
-const LOCAL_CACHE_TS_KEY = 'andalus_cache_last_prepared';
+const LOCAL_CACHE_PREFIX = 'academy_cache_';
+const LOCAL_CACHE_TS_KEY = 'academy_cache_last_prepared';
 
 function cacheDataLocally(key, data) {
   try {
@@ -3600,7 +3600,7 @@ function evaluationMessage(name, date, subjectName, trainer, rating) {
    AUTH (Supabase Auth)
    ============================================================ */
 
-const OFFLINE_CREDS_KEY = 'andalus_offline_creds_v1';
+const OFFLINE_CREDS_KEY = 'academy_offline_creds_v1';
 
 async function sha256Hex(text) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
@@ -3611,7 +3611,7 @@ async function cacheOfflineCredentials(email, password, profile) {
   try {
     const hash = await sha256Hex(email.toLowerCase().trim() + ':' + password);
     localStorage.setItem(OFFLINE_CREDS_KEY, JSON.stringify({ email: email.toLowerCase().trim(), hash, profile }));
-    localStorage.setItem('andalus_cached_profile_v1', JSON.stringify(profile));
+    localStorage.setItem('academy_cached_profile_v1', JSON.stringify(profile));
   } catch (e) { /* لو المتصفح مش بيدعم Web Crypto، تجاهل بهدوء — الدخول الأونلاين مش متأثر */ }
 }
 
@@ -3759,7 +3759,7 @@ window.doLogin = async function doLogin() {
   }
 };
 
-const CACHED_PROFILE_KEY = 'andalus_cached_profile_v1';
+const CACHED_PROFILE_KEY = 'academy_cached_profile_v1';
 
 async function loadUserProfile() {
   if (!navigator.onLine) {
@@ -5677,7 +5677,7 @@ function renderDailySummary() {
 
   // 7) تذكير بالنسخة الاحتياطية — لو عدّى أسبوع من غير نسخة كاملة (لمديري النظام فقط)
   if (currentUser?.role === 'admin') {
-    const lastBackup = localStorage.getItem('andalus_last_full_backup');
+    const lastBackup = localStorage.getItem('academy_last_full_backup');
     const daysSince = lastBackup ? Math.floor((Date.now() - new Date(lastBackup).getTime()) / 86400000) : null;
     if (!lastBackup || daysSince >= 7) {
       const msg = lastBackup ? `آخر نسخة احتياطية كاملة كانت من ${daysSince} يوم` : 'لسه ما اخدتش نسخة احتياطية كاملة من قبل';
@@ -6714,7 +6714,7 @@ async function excludeStudentFromSession(studentId) {
   if (!confirm(`تأكيد استبعاد ${student ? student.name : 'الطالب'} من هذه المحاضرة بالذات؟\n(هيفضل مسجّل فى البرنامج عادي، بس مش هيظهر فى كشف حضور المحاضرة دي)`)) return;
   const { error } = await sb.from('attendance_session_exclusions').insert({ session_id: sessionId, student_id: studentId });
   if (error) {
-    if (error.code === '42P01') showToast('جدول attendance_session_exclusions غير موجود — نفّذ SQL المرفق (andalus_v4_2_attendance_exclusions) أولاً', 'error');
+    if (error.code === '42P01') showToast('جدول attendance_session_exclusions غير موجود — نفّذ SQL المرفق (academy_v4_2_attendance_exclusions) أولاً', 'error');
     else if (error.code === '23505') showToast('الطالب مستبعد بالفعل من هذه المحاضرة', 'error');
     else showToast('خطأ: ' + error.message, 'error');
     return;
@@ -8770,7 +8770,7 @@ async function exportAll() {
   }))), 'سجل النشاط');
   XLSX.writeFile(wb, ACADEMY.fileTag + '_كامل_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.xlsx');
   closeModal('modal-export');
-  localStorage.setItem('andalus_last_full_backup', new Date().toISOString());
+  localStorage.setItem('academy_last_full_backup', new Date().toISOString());
   showToast('✅ تم تصدير كل البيانات');
 }
 
@@ -8859,7 +8859,7 @@ async function exportAllWord() {
 
   downloadWordDoc(sections, ACADEMY.fileTag + '_كامل_' + new Date().toLocaleDateString('ar-EG').replace(/\//g, '-') + '.doc');
   closeModal('modal-export');
-  localStorage.setItem('andalus_last_full_backup', new Date().toISOString());
+  localStorage.setItem('academy_last_full_backup', new Date().toISOString());
   showToast('✅ تم تصدير كل البيانات');
 }
 
@@ -9385,12 +9385,12 @@ async function loadExpenseActorNames() {
   try {
     const { data, error } = await sb.from('user_profiles').select('id,full_name,username,role');
     if (error) throw error;
-    window.__andalusActorNames = Object.fromEntries((data || []).map(u => [String(u.id), { name: u.full_name || u.username || 'مستخدم', role: u.role === 'admin' ? 'مدير' : 'موظف' }]));
-  } catch (error) { console.warn('تعذر تحميل أسماء مسجلي العمليات:', error); window.__andalusActorNames = window.__andalusActorNames || {}; }
+    window.__academyActorNames = Object.fromEntries((data || []).map(u => [String(u.id), { name: u.full_name || u.username || 'مستخدم', role: u.role === 'admin' ? 'مدير' : 'موظف' }]));
+  } catch (error) { console.warn('تعذر تحميل أسماء مسجلي العمليات:', error); window.__academyActorNames = window.__academyActorNames || {}; }
 }
 function getExpenseActorLabel(id) {
   if (!id) return 'غير مسجل';
-  const actor = window.__andalusActorNames?.[String(id)];
+  const actor = window.__academyActorNames?.[String(id)];
   return actor ? `${actor.name} (${actor.role})` : 'حساب غير موجود حاليًا';
 }
 async function loadExpenses() {
@@ -11142,20 +11142,20 @@ async function buildNotifications() {
 // ✅ تخزين دائم لمفاتيح الإشعارات المقروءة، مع تنظيف تلقائي للمفاتيح الأقدم من 60 يوم
 function getReadNotificationKeys() {
   try {
-    const raw = JSON.parse(localStorage.getItem('andalus_read_notifications') || '{}');
+    const raw = JSON.parse(localStorage.getItem('academy_read_notifications') || '{}');
     const cutoff = Date.now() - 60 * 24 * 60 * 60 * 1000;
     let changed = false;
     Object.keys(raw).forEach(k => { if (raw[k] < cutoff) { delete raw[k]; changed = true; } });
-    if (changed) localStorage.setItem('andalus_read_notifications', JSON.stringify(raw));
+    if (changed) localStorage.setItem('academy_read_notifications', JSON.stringify(raw));
     return new Set(Object.keys(raw));
   } catch (e) { return new Set(); }
 }
 
 function markNotificationKeyRead(key) {
   try {
-    const raw = JSON.parse(localStorage.getItem('andalus_read_notifications') || '{}');
+    const raw = JSON.parse(localStorage.getItem('academy_read_notifications') || '{}');
     raw[key] = Date.now();
-    localStorage.setItem('andalus_read_notifications', JSON.stringify(raw));
+    localStorage.setItem('academy_read_notifications', JSON.stringify(raw));
   } catch (e) {}
 }
 
@@ -11893,12 +11893,12 @@ function showGeneratedExamReview(exam) {
         '</article>';
     }).join('');
 
-  window._andalusGeneratedExam = exam;
+  window._academyGeneratedExam = exam;
   modal.classList.add('open');
 }
 
 function copyGeneratedExamJson() {
-  const exam = window._andalusGeneratedExam;
+  const exam = window._academyGeneratedExam;
   if (!exam) { showToast('لا توجد أسئلة لنسخها', 'error'); return; }
   const text = JSON.stringify(exam, null, 2);
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -11938,7 +11938,7 @@ function openCreateExamForMaterial(materialName) {
 let generatedExamPending = false;
 
 function openGeneratedExamSettings() {
-  const exam = window._andalusGeneratedExam;
+  const exam = window._academyGeneratedExam;
   if (!exam || !Array.isArray(exam.questions) || !exam.questions.length) {
     showToast('لا توجد أسئلة جاهزة لإنشاء الامتحان', 'error');
     return;
@@ -12057,7 +12057,7 @@ async function saveExam() {
   }
 
   if (generatedExamPending) {
-    const generated = window._andalusGeneratedExam;
+    const generated = window._academyGeneratedExam;
     const normalizeAnswer = value => String(value ?? '').trim().toLowerCase();
     const generatedRows = generated.questions.map((q, index) => {
       const options = Array.isArray(q.options) ? q.options.map(v => String(v ?? '').trim()) : [];
@@ -13087,7 +13087,7 @@ async function getStudentDeviceStorageKey(nationalId) {
       const bytes = new TextEncoder().encode(value);
       const digest = await window.crypto.subtle.digest('SHA-256', bytes);
       const hashedId = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
-      return 'andalus_student_device_token_v1:' + hashedId;
+      return 'academy_student_device_token_v1:' + hashedId;
     } catch (_) { /* use compatibility key below */ }
   }
   let h1 = 0x811c9dc5, h2 = 0x01000193;
@@ -13097,11 +13097,11 @@ async function getStudentDeviceStorageKey(nationalId) {
     h2 = Math.imul(h2 ^ (c + i), 0x85ebca6b);
   }
   const localKey = (h1 >>> 0).toString(16).padStart(8, '0') + (h2 >>> 0).toString(16).padStart(8, '0');
-  return 'andalus_student_device_token_v1:compat:' + localKey;
+  return 'academy_student_device_token_v1:compat:' + localKey;
 }
 
 async function getStudentDeviceToken(nationalId = '') {
-  const lastKeyName = 'andalus_student_device_last_key_v1';
+  const lastKeyName = 'academy_student_device_last_key_v1';
   try {
     let tokenKey = '';
     if (String(nationalId || '').trim()) {
@@ -13111,7 +13111,7 @@ async function getStudentDeviceToken(nationalId = '') {
       tokenKey = await getStudentDeviceStorageKey(nationalId);
     } else {
       tokenKey = localStorage.getItem(lastKeyName) || '';
-      if (!tokenKey.startsWith('andalus_student_device_token_v1:')) return null;
+      if (!tokenKey.startsWith('academy_student_device_token_v1:')) return null;
     }
     let token = localStorage.getItem(tokenKey);
     if (!token && String(nationalId || '').trim()) {
@@ -13157,7 +13157,7 @@ async function completeStudentDeviceLogin(studentCode = '', nationalId = '') {
   }
   if (String(nationalId || '').trim()) {
     const key = await getStudentDeviceStorageKey(nationalId);
-    localStorage.setItem('andalus_student_device_last_key_v1', key);
+    localStorage.setItem('academy_student_device_last_key_v1', key);
   }
   unifiedPortalStudent = data.student;
   unifiedPortalPhone = String(data.student?.phone || '');
@@ -14190,7 +14190,7 @@ async function downloadAlbumPhoto(id,url,index){
   try{
     const response=await fetch(url);if(!response.ok)throw new Error('تعذر تنزيل الصورة');
     const blob=await response.blob();const ext=(blob.type.split('/')[1]||'jpg').replace('jpeg','jpg');
-    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='andalus-photo-'+index+'.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='academy-photo-'+index+'.'+ext;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
   }catch(e){window.open(url,'_blank','noopener');showToast('فتحنا الصورة في تبويب جديد؛ لو لم يبدأ التحميل احفظها من قائمة الصورة.','info');}
 }
 function getSelectedAlbumPhotoItems(){
@@ -14200,12 +14200,12 @@ function getSelectedAlbumPhotoItems(){
 async function downloadSelectedAlbumPhotos(){
   const items=getSelectedAlbumPhotoItems();if(!items.length){showToast('حدد صورة واحدة على الأقل أولًا','error');return;}
   if(items.length===1){await downloadAlbumPhoto(items[0].id,items[0].url,items[0].index);return;}
-  await downloadAlbumItemsAsZip(items,'andalus-selected-photos.zip');
+  await downloadAlbumItemsAsZip(items,'academy-selected-photos.zip');
 }
 async function downloadAlbumAsZip(){
   const items=[...document.querySelectorAll('#album-photos-grid .album-photo-select')].map(box=>({id:box.value,url:box.dataset.url,index:Number(box.dataset.index||0)+1}));
   if(!items.length){showToast('الألبوم لا يحتوي على صور','error');return;}
-  await downloadAlbumItemsAsZip(items,'andalus-album-'+String(currentAlbumId||'photos').slice(0,8)+'.zip');
+  await downloadAlbumItemsAsZip(items,'academy-album-'+String(currentAlbumId||'photos').slice(0,8)+'.zip');
 }
 async function downloadAlbumItemsAsZip(items,filename){
   if(typeof JSZip==='undefined'){showToast('مكتبة ضغط الملفات غير متاحة حاليًا؛ حمّل الصور المحددة كل صورة على حدة.','error');return;}
@@ -15329,7 +15329,7 @@ async function saveTask() {
         ? await sb.from('tasks').update(task).eq('id', editingTaskId)
         : await sb.from('tasks').insert(task);
       if (retry.error) { showToast('خطأ: ' + retry.error.message, 'error'); return; }
-      showToast('⚠️ تم الحفظ بدون خيار الربط — نفّذ andalus_v6_1_task_links.sql عشان يشتغل', 'info');
+      showToast('⚠️ تم الحفظ بدون خيار الربط — نفّذ academy_v6_1_task_links.sql عشان يشتغل', 'info');
     } else { showToast('خطأ: ' + error.message, 'error'); return; }
   }
   closeModal('modal-task');
@@ -15956,7 +15956,7 @@ function applyRolePermissions() {
 /* ============================================================
    INIT
    ============================================================ */
-console.log('✅ Andalus Academy v6.6 loaded — Daily Revenue Log');
+console.log('✅ Academy System v6.6 loaded — Daily Revenue Log');
 
 // تسجيل Service Worker (PWA + offline cache)
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
@@ -16585,7 +16585,7 @@ async function changeStudySummaryQuestion(delta){
 </script>
 
 
-<script src="andalus-golden-league.js?v=2"></script>
+<script src="academy-golden-league.js?v=2"></script>
 <script src="study-summary-ai.js?v=17"></script>
 <script src="login-runtime-guard.js?v=1"></script>
 <script src="employee-activity-log.js?v=3"></script>

@@ -1,4 +1,4 @@
-/* Andalus Face Camera Fix v2 — mobile camera + explicit face-api model loading + tolerant detection */
+/* Academy Face Camera Fix v2 — mobile camera + explicit face-api model loading + tolerant detection */
 (()=>{
 'use strict';
 const MODEL_URL='https://justadudewhohacks.github.io/face-api.js/models';

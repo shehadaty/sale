@@ -1,10 +1,10 @@
-/* Andalus Academy — deliberate 3D icon tiles for semantic UI icons. */
+/* Academy System — deliberate 3D icon tiles for semantic UI icons. */
 (function () {
   'use strict';
-  if (window.__andalus3DIconsInstalled) return;
-  window.__andalus3DIconsInstalled = true;
+  if (window.__academy3DIconsInstalled) return;
+  window.__academy3DIconsInstalled = true;
 
-  const STYLE_ID = 'andalus-3d-icons-style';
+  const STYLE_ID = 'academy-3d-icons-style';
   const ICON_SELECTOR = '.nav-icon,.nav-card-icon,.gs-result-icon';
   const EMOJI_RE = /\\p{Extended_Pictographic}(?:\\uFE0F|\\uFE0E)?(?:\\u200D\\p{Extended_Pictographic}(?:\\uFE0F|\\uFE0E)?)*|[0-9#*]\\uFE0F?\\u20E3/gu;
 

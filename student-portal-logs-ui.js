@@ -1,8 +1,8 @@
-/* Andalus Academy — Student Portal Logs + menu cleanup */
+/* Academy System — Student Portal Logs + menu cleanup */
 (() => {
   'use strict';
 
-  const AI_RE = /andalus[-_ ]?ai|أندلس\s*ai|الاندلس\s*ai|الأندلس\s*ai/i;
+  const AI_RE = /academy[-_ ]?ai/i;
   const COMP_LOG_RE = /سجل\s*أعمال\s*المسابقات|أعمال\s*المسابقات/i;
   let observerStarted = false;
 
@@ -10,14 +10,14 @@
     return (el?.textContent || '').replace(/\s+/g, ' ').trim();
   }
 
-  function removeAndalusAI() {
+  function removeAcademyAI() {
     document.querySelectorAll('a[href],iframe[src],script[src],*[id],*[class]').forEach(el => {
       const id = typeof el.id === 'string' ? el.id : '';
       const cls = typeof el.className === 'string' ? el.className : '';
       const href = el.getAttribute?.('href') || '';
       const src = el.getAttribute?.('src') || '';
       const marker = `${id} ${cls} ${href} ${src}`;
-      if (/andalus[-_]?ai/i.test(marker) || /ai[-_]?robot/i.test(marker)) {
+      if (/academy[-_]?ai/i.test(marker) || /ai[-_]?robot/i.test(marker)) {
         if (!/exam|اختبار|امتحان/i.test(marker)) el.remove();
       }
     });
@@ -184,7 +184,7 @@
   };
 
   function cleanup() {
-    removeAndalusAI();
+    removeAcademyAI();
     removeOldCompetitionLog();
     // Records now live in the unified main-dashboard icon, not in a side-nav overlay.
     document.querySelectorAll('[data-student-portal-logs-nav]').forEach(el => el.remove());
@@ -196,8 +196,8 @@
     if (observerStarted) return;
     observerStarted = true;
     const mo = new MutationObserver(() => {
-      window.clearTimeout(window.__andalusPortalUiTimer);
-      window.__andalusPortalUiTimer = window.setTimeout(cleanup, 80);
+      window.clearTimeout(window.__academyPortalUiTimer);
+      window.__academyPortalUiTimer = window.setTimeout(cleanup, 80);
     });
     mo.observe(document.body, { childList: true, subtree: true });
   }

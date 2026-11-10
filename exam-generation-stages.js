@@ -1,7 +1,7 @@
-/* Andalus staged AI exam generator */
+/* Academy staged AI exam generator */
 (function () {
   'use strict';
-  const DRAFT_KEY = 'andalus_exam_generation_draft_v1';
+  const DRAFT_KEY = 'academy_exam_generation_draft_v1';
   const TYPES = [
     { key: 'mcq', label: 'اختيار من متعدد', icon: '🔵' },
     { key: 'true_false', label: 'صح / خطأ', icon: '🟢' },
@@ -81,6 +81,6 @@
       if (typeof showToast === 'function') showToast('تم تجميع الأسئلة الناجحة وعرضها للمراجعة');
     } finally { if (startButton) { startButton.disabled = false; startButton.textContent = '🚀 بدء التوليد على مراحل'; } renderDraftStatus(modal); }
   }
-  function install() { window.startAiExamGeneration = openStageModal; window.__andalusStagedExamGeneration = { open: openStageModal, readDraft }; console.info('Andalus staged exam generation loaded.'); }
+  function install() { window.startAiExamGeneration = openStageModal; window.__academyStagedExamGeneration = { open: openStageModal, readDraft }; console.info('Academy staged exam generation loaded.'); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install, { once: true }); else install();
 })();

@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 const root = process.cwd();
 const htmlPath = path.join(root, 'index.html');
 const html = fs.readFileSync(htmlPath, 'utf8');
-const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'andalus-js-check-'));
+const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'academy-js-check-'));
 let checked = 0;
 const failures = [];
 

@@ -1,9 +1,9 @@
-/* Andalus unified Student Portal admin gateway */
+/* Academy unified Student Portal admin gateway */
 (() => {
   'use strict';
-  const GATEWAY_ID = 'andalus-student-portal-gateway-nav';
-  const MODAL_ID = 'andalus-student-portal-gateway-modal';
-  const AI_MODAL_ID = 'andalus-student-ai-admin-dashboard';
+  const GATEWAY_ID = 'academy-student-portal-gateway-nav';
+  const MODAL_ID = 'academy-student-portal-gateway-modal';
+  const AI_MODAL_ID = 'academy-student-ai-admin-dashboard';
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const sbc = () => window.sb || null;
   const fmtDate = (v) => v ? new Date(v).toLocaleString('ar-EG') : '—';

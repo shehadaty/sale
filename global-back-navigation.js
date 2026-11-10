@@ -1,11 +1,11 @@
-/* Andalus Global Back Navigation
+/* Academy Global Back Navigation
  * Consistent internal back behavior for admin, student and parent flows.
  * Includes a resilient same-document history guard for Android Chrome.
  */
 (function () {
   'use strict';
-  if (window.__andalusBackNavigationInstalled) return;
-  window.__andalusBackNavigationInstalled = true;
+  if (window.__academyBackNavigationInstalled) return;
+  window.__academyBackNavigationInstalled = true;
 
   function visible(el) {
     if (!el) return false;
@@ -75,15 +75,15 @@
   function install() {
     const style = document.createElement('style');
     style.textContent = `
-      #andalus-global-back{position:fixed;right:14px;bottom:14px;z-index:2147483000;display:none;align-items:center;gap:7px;border:0;border-radius:12px;padding:10px 15px;background:#152238;color:#fff;font-family:Cairo,Arial,sans-serif;font-size:13px;font-weight:900;box-shadow:0 8px 25px rgba(15,23,42,.25);cursor:pointer;direction:rtl}
-      #andalus-global-back:hover{background:#1f3562;transform:translateY(-1px)}
-      #andalus-global-back:active{transform:translateY(0)}
-      @media(max-width:600px){#andalus-global-back{right:10px;bottom:10px;padding:9px 13px;font-size:12px}}
+      #academy-global-back{position:fixed;right:14px;bottom:14px;z-index:2147483000;display:none;align-items:center;gap:7px;border:0;border-radius:12px;padding:10px 15px;background:#152238;color:#fff;font-family:Cairo,Arial,sans-serif;font-size:13px;font-weight:900;box-shadow:0 8px 25px rgba(15,23,42,.25);cursor:pointer;direction:rtl}
+      #academy-global-back:hover{background:#1f3562;transform:translateY(-1px)}
+      #academy-global-back:active{transform:translateY(0)}
+      @media(max-width:600px){#academy-global-back{right:10px;bottom:10px;padding:9px 13px;font-size:12px}}
     `;
     document.head.appendChild(style);
 
     const btn = document.createElement('button');
-    btn.id = 'andalus-global-back';
+    btn.id = 'academy-global-back';
     btn.type = 'button';
     btn.setAttribute('aria-label', 'رجوع');
     btn.innerHTML = '← <span>رجوع</span>';
@@ -93,7 +93,7 @@
     let portalVisible = false;
     let guardTimer = null;
     let guardBusy = false;
-    const backSentinel = '__andalus_portal_back_v2__';
+    const backSentinel = '__academy_portal_back_v2__';
 
     const refresh = () => {
       const login = document.getElementById('login-screen');
@@ -111,8 +111,8 @@
       guardBusy = true;
       try {
         const state = history.state;
-        if (!state || state.__andalusPortalBack !== backSentinel) {
-          history.pushState({ ...(state || {}), __andalusPortalBack: backSentinel, __andalusGuard: true }, '', location.href);
+        if (!state || state.__academyPortalBack !== backSentinel) {
+          history.pushState({ ...(state || {}), __academyPortalBack: backSentinel, __academyGuard: true }, '', location.href);
         }
       } catch (error) {
         console.warn('تعذر تفعيل الرجوع الداخلي للبوابة:', error);
@@ -124,7 +124,7 @@
     const observer = new MutationObserver(refresh);
     observer.observe(document.body, {subtree:true, childList:true, attributes:true, attributeFilter:['style','class']});
     refresh();
-    window.andalusGoBack = goBack;
+    window.academyGoBack = goBack;
 
     // Android Chrome's edge-swipe/system Back reaches the page as popstate
     // when a same-document history entry exists. Re-arm immediately after

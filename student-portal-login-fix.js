@@ -2,12 +2,12 @@
 (function(){
   try {
     function loadStudentAI(){
-      if(document.querySelector('script[data-andalus-student-ai-assistant]'))return;
-      const s=document.createElement('script');s.src='./student-ai-assistant.js?v=20261108';s.dataset.andalusStudentAiAssistant='1';s.defer=true;document.head.appendChild(s);
+      if(document.querySelector('script[data-academy-student-ai-assistant]'))return;
+      const s=document.createElement('script');s.src='./student-ai-assistant.js?v=20261108';s.dataset.academyStudentAiAssistant='1';s.defer=true;document.head.appendChild(s);
     }
     function loadStudentAIMenuFix(){
-      if(document.querySelector('script[data-andalus-student-ai-menu-fix]'))return;
-      const s=document.createElement('script');s.src='./student-ai-menu-fix.js?v=20261103';s.dataset.andalusStudentAiMenuFix='1';s.defer=true;document.head.appendChild(s);
+      if(document.querySelector('script[data-academy-student-ai-menu-fix]'))return;
+      const s=document.createElement('script');s.src='./student-ai-menu-fix.js?v=20261103';s.dataset.academyStudentAiMenuFix='1';s.defer=true;document.head.appendChild(s);
     }
     if(typeof window.completeStudentDeviceLogin!=='function'||typeof window.getStudentDeviceToken!=='function') { setTimeout(loadStudentAI,800); setTimeout(loadStudentAIMenuFix,1000); return; }
     window.completeStudentDeviceLogin=async function(studentCode='',nationalId=''){
@@ -18,7 +18,7 @@
       const {data,error}=await Promise.race([request,timeout]);
       if(error)throw new Error(error.message||'تعذر الاتصال بخدمة تسجيل الدخول.');
       if(!data?.ok){if(data?.reason==='device_mismatch')throw new Error('هذا الحساب مربوط بجهاز آخر. تواصل مع إدارة المركز لإعادة ربط الجهاز.');if(data?.reason==='session_not_found')return false;if(data?.reason==='invalid_device')throw new Error('رمز الجهاز غير صالح. أعد فتح البوابة وحاول مرة أخرى.');if(data?.reason==='invalid_credentials')throw new Error('بيانات الدخول غير صحيحة، راجع رقم القيد والرقم القومي.');throw new Error('تعذر تسجيل الدخول. راجع بياناتك وحاول مرة أخرى.');}
-      window.unifiedPortalStudent=data.student;window.unifiedPortalPhone=String(data.student?.phone||'');window.studentPortalFaceToken=null;window.__andalusStudentPortalSessionToken=data.token||null;
+      window.unifiedPortalStudent=data.student;window.unifiedPortalPhone=String(data.student?.phone||'');window.studentPortalFaceToken=null;window.__academyStudentPortalSessionToken=data.token||null;
       if(typeof window.renderStudentPortalMenu==='function')await Promise.resolve(window.renderStudentPortalMenu());else throw new Error('تعذر تجهيز واجهة بوابة الطالب. أعد تحميل الصفحة.');
       setTimeout(loadStudentAI,150);setTimeout(loadStudentAIMenuFix,250);return true;
     };

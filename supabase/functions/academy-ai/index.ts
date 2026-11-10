@@ -8,7 +8,7 @@ const CORS={
 };
 
 const GEMINI="https://generativelanguage.googleapis.com/v1beta/interactions";
-const MODEL=Deno.env.get("ANDALUS_AI_MODEL")||"gemini-3.5-flash-lite";
+const MODEL=Deno.env.get("ACADEMY_AI_MODEL")||"gemini-3.5-flash-lite";
 
 const clean=(v:any,n=6000)=>String(v??"").replace(/\s+/g," ").trim().slice(0,n);
 const json=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:CORS});
@@ -26,13 +26,15 @@ async function auth(req:Request){
  if(error||!user)throw Error("جلسة الدخول غير صالحة.");
 
  const db=createClient(url,service);
+
+ ACADEMY_NAME=await getAcademyName(db);
  const {data:p,error:pe}=await db.from("user_profiles")
    .select("id,role,full_name,allowed_pages,is_active")
    .eq("id",user.id).maybeSingle();
 
  if(pe)throw Error("تعذر التحقق من الصلاحيات.");
  if(!p || p.is_active===false)throw Error("الحساب غير نشط أو لا يملك ملف صلاحيات.");
- if(p.role!=="admin")throw Error("Andalus AI متاح لحساب المدير فقط لحماية بيانات المركز.");
+ if(p.role!=="admin")throw Error("Academy AI متاح لحساب المدير فقط لحماية بيانات المركز.");
 
  return {user,profile:p,db};
 }
@@ -41,7 +43,7 @@ const tools=[
  {
   type:"function",
   name:"get_database_schema",
-  description:"قراءة هيكل قاعدة بيانات مركز الأندلس لمعرفة الجداول والأعمدة قبل بناء أي استعلام.",
+  description:"قراءة هيكل قاعدة بيانات الأكاديمية لمعرفة الجداول والأعمدة قبل بناء أي استعلام.",
   parameters:{type:"object",properties:{},additionalProperties:false}
  },
  {
@@ -303,8 +305,17 @@ async function tool(name:string,args:any,db:any){
  throw Error("أداة غير معروفة.");
 }
 
+let ACADEMY_NAME="الأكاديمية";
+async function getAcademyName(db: any): Promise<string> {
+  try {
+    const { data } = await db.from("system_settings").select("value").eq("key", "system_name").maybeSingle();
+    const v = String(data?.value || "").trim();
+    return v || "الأكاديمية";
+  } catch (_) { return "الأكاديمية"; }
+}
+
 const INSTRUCTIONS=`
-أنت Andalus AI، المساعد الإداري الذكي لمركز الأندلس للتدريب.
+أنت المساعد الإداري الذكي لـ{{ACADEMY}}.
 
 أنت مساعد عام للنظام ولست مجرد chatbot بسيط.
 
@@ -347,7 +358,7 @@ async function gemini(input:any,previous?:string){
   model:MODEL,
   input,
   tools,
-  system_instruction:INSTRUCTIONS
+  system_instruction:INSTRUCTIONS.replaceAll("{{ACADEMY}}",ACADEMY_NAME)
  };
 
  if(previous)body.previous_interaction_id=previous;
@@ -470,7 +481,7 @@ Deno.serve(async(req)=>{
     try {
       await db.from("activity_log").insert({
         user_id:user.id,
-        action:"andalus_ai_student_lookup",
+        action:"academy_ai_student_lookup",
         details:JSON.stringify({enrollment_lookup:requestedId,guardian_phone_requested:wantsGuardian})
       });
     } catch {}
@@ -507,7 +518,7 @@ Deno.serve(async(req)=>{
    try{
     await db.from("activity_log").insert({
      user_id:user.id,
-     action:"andalus_ai_query",
+     action:"academy_ai_query",
      details:JSON.stringify({question:message.slice(0,500),model:"verified_database_english"})
     });
    }catch{}
@@ -550,7 +561,7 @@ Deno.serve(async(req)=>{
    try{
     await db.from("activity_log").insert({
      user_id:user.id,
-     action:"andalus_ai_query",
+     action:"academy_ai_query",
      details:JSON.stringify({question:message.slice(0,500),model:"verified_database"})
     });
    }catch{}
@@ -629,14 +640,14 @@ Deno.serve(async(req)=>{
   try{
    await db.from("activity_log").insert({
     user_id:user.id,
-    action:"andalus_ai_query",
+    action:"academy_ai_query",
     details:JSON.stringify({question:message.slice(0,500),model:MODEL})
    });
   }catch{}
 
   return json({answer,model:MODEL});
  }catch(e:any){
-  console.error("andalus-ai",e);
+  console.error("academy-ai",e);
   return json({error:e?.message||"حدث خطأ غير متوقع."},500);
  }
 });
