@@ -81,7 +81,7 @@ function renderAdminAchievementRanking(batch) {
     rankBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--muted);">اختر دفعة 8 أو دفعة 10 لعرض الترتيب.</td></tr>';
     return;
   }
-  if (label) label.textContent = 'دفعة ' + batch + ' — أفضل 50 متدربًا من كفر الدوار والإسكندرية معًا، دون فصل حسب الفرع أو النظام. الترتيب حسب النتيجة الإجمالية.';
+  if (label) label.textContent = 'دفعة ' + batch + ' — أفضل 50 متدربًا من جميع الفروع معًا، دون فصل حسب الفرع أو النظام. الترتيب حسب النتيجة الإجمالية.';
   const sums = new Map();
   adminAchievementRows.forEach(a => {
     const current = sums.get(String(a.student_id)) || { points: 0, activity: 0 };

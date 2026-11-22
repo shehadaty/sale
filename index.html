@@ -885,8 +885,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
               <strong style="font-size:13px;color:var(--navy);">🏢 عرض بيانات:</strong>
               <div class="branch-filter-tabs" id="branch-filter-tabs">
                 <button class="branch-tab active" data-branch="" onclick="setDashboardBranch('')">الكل</button>
-                <button class="branch-tab" data-branch="كفر الدوار" onclick="setDashboardBranch('كفر الدوار')">كفر الدوار</button>
-                <button class="branch-tab" data-branch="فرع اسكندرية" onclick="setDashboardBranch('فرع اسكندرية')">فرع اسكندرية</button>
+                <button class="branch-tab" data-branch="@@BRANCH1@@" onclick="setDashboardBranch('@@BRANCH1@@')">@@BRANCH1@@</button>
+                <button class="branch-tab" data-branch="@@BRANCH2@@" onclick="setDashboardBranch('@@BRANCH2@@')">@@BRANCH2@@</button>
               </div>
             </div>
           </div>
@@ -978,8 +978,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           <div id="students-branch-home" style="margin-bottom:18px;">
             <div style="font-size:15px;font-weight:900;color:var(--navy);margin-bottom:12px;">📍 اختار الفرع</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
-              <button type="button" class="card" style="padding:22px;text-align:center;cursor:pointer;border:2px solid var(--border);font-family:inherit;" onclick="openStudentsBranch('كفر الدوار')"><div style="font-size:30px;">🏢</div><div style="font-size:16px;font-weight:900;color:var(--navy);">فرع كفر الدوار</div><div id="stu-home-count-kafr" style="font-size:12px;color:var(--muted);margin-top:5px;">عدد الطلاب: —</div></button>
-              <button type="button" class="card" style="padding:22px;text-align:center;cursor:pointer;border:2px solid var(--border);font-family:inherit;" onclick="openStudentsBranch('فرع اسكندرية')"><div style="font-size:30px;">🏙️</div><div style="font-size:16px;font-weight:900;color:var(--navy);">فرع الإسكندرية</div><div id="stu-home-count-vic" style="font-size:12px;color:var(--muted);margin-top:5px;">عدد الطلاب: —</div></button>
+              <button type="button" class="card" style="padding:22px;text-align:center;cursor:pointer;border:2px solid var(--border);font-family:inherit;" onclick="openStudentsBranch('@@BRANCH1@@')"><div style="font-size:30px;">🏢</div><div style="font-size:16px;font-weight:900;color:var(--navy);">@@BRANCH1@@</div><div id="stu-home-count-kafr" style="font-size:12px;color:var(--muted);margin-top:5px;">عدد الطلاب: —</div></button>
+              <button type="button" class="card" style="padding:22px;text-align:center;cursor:pointer;border:2px solid var(--border);font-family:inherit;" onclick="openStudentsBranch('@@BRANCH2@@')"><div style="font-size:30px;">🏙️</div><div style="font-size:16px;font-weight:900;color:var(--navy);">@@BRANCH2@@</div><div id="stu-home-count-vic" style="font-size:12px;color:var(--muted);margin-top:5px;">عدد الطلاب: —</div></button>
             </div>
             <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-outline btn-sm admin-only" style="display:none;" onclick="openRecycleBin()">🗑 سلة المحذوفات</button><button class="btn btn-outline btn-sm" onclick="openDuplicateScanner()">🔍 كاشف تكرار البيانات</button></div>
           </div>
@@ -1012,8 +1012,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             <input type="text" class="search-input" placeholder="🔍 ابحث باسم أو رقم قيد..." id="search-input" oninput="debouncedFilterStudents()">
             <select class="search-input" style="max-width:160px;display:none;" id="filter-branch" onchange="filterStudents()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
             <select class="search-input" style="max-width:190px" id="filter-program" onchange="filterStudents()"></select>
             <button class="btn btn-outline" onclick="downloadStudentsExcelTemplate()">⬇️ قالب إكسيل</button>
@@ -1130,7 +1130,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
                 <div class="form-group"><label>الأولوية</label><select id="notification-priority"><option value="normal">عادية</option><option value="low">منخفضة</option><option value="high">عالية</option><option value="urgent">عاجلة</option></select></div>
                 <div class="form-group" id="notification-show-on-login-wrap" style="grid-column:1/-1;"><label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;"><input id="notification-show-on-login" type="checkbox" style="margin-top:4px;transform:scale(1.1);"><span><strong>إظهار نافذة مهمة فور دخول الطالب</strong><small style="display:block;color:var(--muted);font-weight:400;line-height:1.8;margin-top:3px;">سيظهر عنوان الإشعار ومحتواه تلقائيًا في بوابة الطالب، ويظل غير مقروء حتى يضغط الطالب «قرأت الإشعار». ويمكنه التأجيل إلى دخوله القادم.</small></span></label></div>
                 <div class="form-group"><label>المستهدفون</label><select id="notification-audience" onchange="toggleNotificationTargetFields()"><option value="all">الجميع</option><option value="student">الطلاب</option><option value="parent">أولياء الأمور</option><option value="branch">فرع محدد</option><option value="program">برنامج محدد</option><option value="staff">الموظفون</option></select></div>
-                <div class="form-group" id="notification-branch-wrap" style="display:none;"><label>الفرع</label><select id="notification-branch"><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option></select></div>
+                <div class="form-group" id="notification-branch-wrap" style="display:none;"><label>الفرع</label><select id="notification-branch"><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option></select></div>
                 <div class="form-group" id="notification-program-wrap" style="display:none;"><label>اسم البرنامج</label><input id="notification-program" maxlength="180" placeholder="اسم البرنامج كما هو مسجل"></div>
                 <div class="form-group" id="notification-student-wrap" style="display:none;"><label>رقم القيد (اختياري لتخصيص التنبيه)</label><input id="notification-student-id" placeholder="رقم القيد"></div>
                 <div class="form-group"><label>موعد النشر (اختياري)</label><input id="notification-scheduled-for" type="datetime-local"></div>
@@ -1354,7 +1354,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           </div>
           <div class="card" style="padding:16px;margin-bottom:14px;">
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;">
-              <div><label class="form-label">الفرع</label><select id="eg-filter-branch" class="search-input" onchange="renderExamGradesOverview()"><option value="">كل الفروع</option><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option></select></div>
+              <div><label class="form-label">الفرع</label><select id="eg-filter-branch" class="search-input" onchange="renderExamGradesOverview()"><option value="">كل الفروع</option><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option></select></div>
               <div><label class="form-label">المجموعة / النظام</label><select id="eg-filter-program" class="search-input" onchange="renderExamGradesOverview()"><option value="">كل المجموعات</option></select></div>
               <div><label class="form-label">المادة</label><select id="eg-filter-subject" class="search-input" onchange="renderExamGradesOverview()"><option value="">اختر المادة</option></select></div>
               <div><label class="form-label">الدور</label><select id="eg-filter-round" class="search-input" onchange="setExamGradesRound(this.value)"><option value="1">الدور الأول</option><option value="2">الدور الثاني</option></select></div>
@@ -1472,8 +1472,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             <input type="text" class="search-input" placeholder="🔍 ابحث باسم أو رقم قيد..." id="pay-search" oninput="filterPayments()">
             <select class="search-input" style="max-width:160px" id="pay-filter-branch" onchange="filterPayments()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
             <select class="search-input" style="max-width:190px" id="pay-filter-program" onchange="filterPayments()"></select>
             <select class="search-input" style="max-width:160px" id="pay-filter-status" onchange="filterPayments()">
@@ -1509,8 +1509,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             <input type="text" class="search-input" placeholder="🔍 ابحث ببند المصروف أو ملاحظة..." id="exp-search" oninput="filterExpenses()">
             <select class="search-input" style="max-width:160px" id="exp-filter-branch" onchange="filterExpenses()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
             <input type="date" class="search-input" style="max-width:170px" id="exp-filter-date" onchange="filterExpenses()">
             <button class="btn btn-outline" onclick="downloadExpensesExcelTemplate()">⬇️ قالب إكسيل</button>
@@ -1527,13 +1527,13 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
               <div class="stat-value" id="exp-stat-today-all" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه — اضغط لعرض الكل</div>
             </div>
-            <div class="stat-card clickable" onclick="setExpenseBranchFilter('كفر الدوار')">
-              <div class="stat-label">كفر الدوار — اليوم</div>
+            <div class="stat-card clickable" onclick="setExpenseBranchFilter('@@BRANCH1@@')">
+              <div class="stat-label">@@BRANCH1@@ — اليوم</div>
               <div class="stat-value" id="exp-stat-kafr-day" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه — اضغط للتصفية</div>
             </div>
-            <div class="stat-card clickable" onclick="setExpenseBranchFilter('فرع اسكندرية')">
-              <div class="stat-label">فرع اسكندرية — اليوم</div>
+            <div class="stat-card clickable" onclick="setExpenseBranchFilter('@@BRANCH2@@')">
+              <div class="stat-label">@@BRANCH2@@ — اليوم</div>
               <div class="stat-value" id="exp-stat-vic-day" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه — اضغط للتصفية</div>
             </div>
@@ -1546,22 +1546,22 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
 
           <div class="stats-grid" style="margin-bottom:18px;grid-template-columns:repeat(4,1fr);">
             <div class="stat-card">
-              <div class="stat-label">📍 كفر الدوار (شهر)</div>
+              <div class="stat-label">📍 @@BRANCH1@@ (شهر)</div>
               <div class="stat-value" id="exp-stat-kafr-month" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">📍 فرع اسكندرية (شهر)</div>
+              <div class="stat-label">📍 @@BRANCH2@@ (شهر)</div>
               <div class="stat-value" id="exp-stat-vic-month" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">📅 كفر الدوار (عام)</div>
+              <div class="stat-label">📅 @@BRANCH1@@ (عام)</div>
               <div class="stat-value" id="exp-stat-kafr-year" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">📅 فرع اسكندرية (عام)</div>
+              <div class="stat-label">📅 @@BRANCH2@@ (عام)</div>
               <div class="stat-value" id="exp-stat-vic-year" style="color:#ef4444">0</div>
               <div class="stat-sub">جنيه</div>
             </div>
@@ -1643,8 +1643,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           <div class="search-bar">
             <select class="search-input" style="max-width:160px" id="tr-filter-branch" onchange="renderTrainersPerformance()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
           </div>
           <div id="trainers-perf-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
@@ -1685,7 +1685,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
                 </datalist>
               </div>
               <div class="form-group2"><label>الفرع</label>
-                <select id="dr-branch"><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option></select>
+                <select id="dr-branch"><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option></select>
               </div>
             </div>
             <div style="padding:0 14px 14px;">
@@ -1698,7 +1698,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
               <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                 <input type="date" class="search-input" id="dr-filter-date" style="max-width:160px" onchange="loadDailyRevenueLog()">
                 <select class="search-input" id="dr-filter-branch" style="max-width:160px" onchange="loadDailyRevenueLog()">
-                  <option value="">كل الفروع</option><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option>
+                  <option value="">كل الفروع</option><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option>
                 </select>
                 <span id="dr-total-label" style="font-size:13px;font-weight:800;color:#16a34a;"></span>
                 <button class="btn btn-danger btn-sm" onclick="bulkDeleteRows({rowClass:'dr-row-cb',table:'daily_revenue',selectAllId:'select-all-dr',label:'إيراد',onSuccess:loadDailyRevenueLog})">🗑 حذف المحدد</button>
@@ -1737,8 +1737,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             <input type="text" class="search-input" placeholder="🔍 ابحث باسم أو رقم قيد..." id="qr-search" oninput="renderQrCodesGrid()">
             <select class="search-input" style="max-width:160px" id="qr-filter-branch" onchange="renderQrCodesGrid()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
             <button class="btn btn-gold" onclick="downloadAllQrCodes()">⬇️ تحميل الكل (ZIP)</button>
           </div>
@@ -1751,8 +1751,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             <button class="btn btn-gold" onclick="openAddAlbum()">+ ألبوم جديد</button>
             <select class="search-input" style="max-width:160px" id="gal-filter-branch" onchange="renderGalleryAlbums()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
           </div>
           <div id="gallery-albums-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;"></div>
@@ -2036,8 +2036,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           <div class="search-bar no-print">
             <select class="search-input" style="max-width:160px" id="fin-filter-branch" onchange="loadFinancialReport()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
             <select class="search-input" style="max-width:160px" id="fin-filter-period" onchange="loadFinancialReport()">
               <option value="month">الشهر الحالي</option>
@@ -2083,8 +2083,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           <div class="search-bar no-print">
             <select class="search-input" style="max-width:160px" id="sched-filter-branch" onchange="renderScheduleCalendar()">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
             <button class="btn btn-gold" onclick="openAddSession()">+ إضافة محاضرة</button>
             <button class="btn btn-outline" onclick="downloadSessionsExcelTemplate()">⬇️ قالب إكسيل</button>
@@ -2265,7 +2265,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
       <div class="section-div">بيانات الالتحاق</div>
       <div class="form-grid">
         <div class="form-group2"><label>الفرع *</label>
-          <select id="s-branch"><option value="">اختر الفرع</option><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option></select>
+          <select id="s-branch"><option value="">اختر الفرع</option><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option></select>
         </div>
         <div class="form-group2"><label>البرنامج / الكورس *</label><select id="s-program" onchange="updateSysOpts()"></select></div>
         <div class="form-group2"><label>النظام</label>
@@ -2330,8 +2330,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
         <div class="form-group2"><label>الفرع المخصص</label>
           <select id="e-branch">
             <option value="الكل">الفرعين (الكل)</option>
-            <option value="كفر الدوار">كفر الدوار فقط</option>
-            <option value="فرع اسكندرية">فرع اسكندرية فقط</option>
+            <option value="@@BRANCH1@@">@@BRANCH1@@ فقط</option>
+            <option value="@@BRANCH2@@">@@BRANCH2@@ فقط</option>
           </select>
         </div>
         <div class="section-div">📋 بيانات البروفايل (اختياري)</div>
@@ -2367,8 +2367,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
         <div class="form-group2">
           <label>الفرع *</label>
           <select id="exp-branch">
-            <option value="كفر الدوار">كفر الدوار</option>
-            <option value="فرع اسكندرية">فرع اسكندرية</option>
+            <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+            <option value="@@BRANCH2@@">@@BRANCH2@@</option>
           </select>
         </div>
         <div class="form-group2">
@@ -2454,7 +2454,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           <div class="form-group2"><label>هاتف المتقدم</label><input type="tel" id="l-phone" placeholder="01XXXXXXXXX" maxlength="15"></div>
           <div class="form-group2"><label>هاتف ولي الأمر</label><input type="tel" id="l-gphone" placeholder="01XXXXXXXXX" maxlength="15"></div>
           <div class="form-group2"><label>الفرع</label>
-            <select id="l-branch"><option value="">غير محدد</option><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option></select>
+            <select id="l-branch"><option value="">غير محدد</option><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option></select>
           </div>
           <div class="form-group2"><label>الحالة</label>
             <select id="l-status"><option value="جديد">جديد</option><option value="تم التواصل">تم التواصل</option><option value="مهتم">مهتم</option><option value="تم تحديد موعد">تم تحديد موعد</option><option value="تحول لطالب">تحول لطالب</option><option value="ملغي">ملغي</option></select>
@@ -2524,7 +2524,7 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             </select>
           </div>
           <div class="form-group2"><label>الفرع</label>
-            <select id="cmp-branch"><option value="">كل الفروع</option><option value="كفر الدوار">كفر الدوار</option><option value="فرع اسكندرية">فرع اسكندرية</option></select>
+            <select id="cmp-branch"><option value="">كل الفروع</option><option value="@@BRANCH1@@">@@BRANCH1@@</option><option value="@@BRANCH2@@">@@BRANCH2@@</option></select>
           </div>
           <div class="form-group2"><label>الميزانية (جنيه)</label><input type="number" id="cmp-budget" min="0" step="0.01"></div>
           <div class="form-group2"><label>تاريخ البدء</label><input type="date" id="cmp-start"></div>
@@ -2620,8 +2620,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
       <div class="form-group2"><label>الفرع</label>
         <select id="album-branch">
           <option value="">كل الفروع</option>
-          <option value="كفر الدوار">كفر الدوار</option>
-          <option value="فرع اسكندرية">فرع اسكندرية</option>
+          <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+          <option value="@@BRANCH2@@">@@BRANCH2@@</option>
         </select>
       </div>
       <div class="form-group2"><label>تاريخ الفعالية</label><input type="date" id="album-date"></div>
@@ -2640,8 +2640,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
       <div class="form-group2"><label>الفرع</label>
         <select id="comp-branch">
           <option value="">كل الفروع</option>
-          <option value="كفر الدوار">كفر الدوار</option>
-          <option value="فرع اسكندرية">فرع اسكندرية</option>
+          <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+          <option value="@@BRANCH2@@">@@BRANCH2@@</option>
         </select>
       </div>
       <div class="form-group2"><label>تاريخ البداية</label><input type="date" id="comp-start"></div>
@@ -2681,8 +2681,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
         <div class="form-group2"><label>الفرع * (اختاره الأول عشان البرامج تتظبط)</label>
           <select id="sess-branch" onchange="onSessionBranchChange()">
             <option value="">— اختر الفرع —</option>
-            <option value="كفر الدوار">كفر الدوار</option>
-            <option value="فرع اسكندرية">فرع اسكندرية</option>
+            <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+            <option value="@@BRANCH2@@">@@BRANCH2@@</option>
           </select>
         </div>
         <div class="form-group2"><label>تاريخ المحاضرة *</label><input type="date" id="sess-date"></div>
@@ -2753,8 +2753,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
         </div>
         <div class="form-group2"><label>الفرع *</label>
           <select id="exam-branch" onchange="buildExamProgramCheckboxes(this.value)">
-            <option value="كفر الدوار">كفر الدوار</option>
-            <option value="فرع اسكندرية">فرع اسكندرية</option>
+            <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+            <option value="@@BRANCH2@@">@@BRANCH2@@</option>
           </select>
         </div>
         <div class="form-group2"><label>مدة الامتحان (بالدقائق) *</label><input type="number" id="exam-duration" min="1" value="30"></div>
@@ -2924,8 +2924,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
             <option value="all">كل الطلاب</option>
             <option value="late">المتأخرون في المدفوعات 🔴</option>
             <option value="absent">من تجاوزوا 25% غياب ⚠️</option>
-            <option value="kafr">طلاب كفر الدوار فقط</option>
-            <option value="victoria">طلاب فرع اسكندرية فقط</option>
+            <option value="kafr">طلاب @@BRANCH1@@ فقط</option>
+            <option value="victoria">طلاب @@BRANCH2@@ فقط</option>
           </select>
         </div>
         <div class="form-group2"><label>نوع الرسالة</label>
@@ -3008,8 +3008,8 @@ input.invalid,select.invalid{border-color:var(--danger);background:#fef2f2;}
           <div class="form-group2"><label>الفرع</label>
             <select id="task-branch">
               <option value="">كل الفروع</option>
-              <option value="كفر الدوار">كفر الدوار</option>
-              <option value="فرع اسكندرية">فرع اسكندرية</option>
+              <option value="@@BRANCH1@@">@@BRANCH1@@</option>
+              <option value="@@BRANCH2@@">@@BRANCH2@@</option>
             </select>
           </div>
         </div>
@@ -4530,7 +4530,7 @@ function buildPulseSlides() {
       <div class="pulse-logo-row"><span class="emoji">🎓</span><h1>${SYSTEM_NAME}</h1></div>
       <div class="pulse-big-number">${pulseStudents.length}</div>
       <div class="pulse-label">طالب وطالبة يثقون بنا</div>
-      <div class="pulse-sub">فى فرعي كفر الدوار وفرع اسكندرية</div>
+      <div class="pulse-sub">فى فرعي @@BRANCH1@@ و@@BRANCH2@@</div>
     </div>`);
 
   // شريحة 2: لوحة الأوائل (بالاسم الأول فقط لحفظ الخصوصية)
@@ -4573,14 +4573,14 @@ function buildPulseSlides() {
     </div>`);
 
   // شريحة 4: إحصائيات عامة (فروع، برامج)
-  const kafrCount = pulseStudents.filter(s => s.branch === 'كفر الدوار').length;
-  const vicCount = pulseStudents.filter(s => s.branch === 'فرع اسكندرية').length;
+  const kafrCount = pulseStudents.filter(s => s.branch === '@@BRANCH1@@').length;
+  const vicCount = pulseStudents.filter(s => s.branch === '@@BRANCH2@@').length;
   pulseSlides.push(`
     <div class="pulse-slide">
       <div class="pulse-logo-row"><span class="emoji">📍</span><h1>فروعنا</h1></div>
       <div class="pulse-grid-3">
-        <div class="pulse-stat-box"><div class="v">${kafrCount}</div><div class="l">طالب فى كفر الدوار</div></div>
-        <div class="pulse-stat-box"><div class="v">${vicCount}</div><div class="l">طالب فى فرع اسكندرية</div></div>
+        <div class="pulse-stat-box"><div class="v">${kafrCount}</div><div class="l">طالب فى @@BRANCH1@@</div></div>
+        <div class="pulse-stat-box"><div class="v">${vicCount}</div><div class="l">طالب فى @@BRANCH2@@</div></div>
         <div class="pulse-stat-box"><div class="v">${pulseStudents.length}</div><div class="l">إجمالي الطلاب</div></div>
       </div>
     </div>`);
@@ -5726,15 +5726,15 @@ function renderDashboardCharts() {
   const countedStudents = getCountedStudents();
   const studentsInScope = bf ? countedStudents.filter(s => normalizeStudentsBranch(s.branch) === normalizeStudentsBranch(bf)) : countedStudents;
   // Branches chart
-  const kafr = bf ? (normalizeStudentsBranch(bf) === 'كفر الدوار' ? studentsInScope.length : 0) : getCountedStudents().filter(s => normalizeStudentsBranch(s.branch) === 'كفر الدوار').length;
-  const vic = bf ? (normalizeStudentsBranch(bf) === 'فرع اسكندرية' ? studentsInScope.length : 0) : getCountedStudents().filter(s => normalizeStudentsBranch(s.branch) === 'فرع اسكندرية').length;
+  const kafr = bf ? (normalizeStudentsBranch(bf) === '@@BRANCH1@@' ? studentsInScope.length : 0) : getCountedStudents().filter(s => normalizeStudentsBranch(s.branch) === '@@BRANCH1@@').length;
+  const vic = bf ? (normalizeStudentsBranch(bf) === '@@BRANCH2@@' ? studentsInScope.length : 0) : getCountedStudents().filter(s => normalizeStudentsBranch(s.branch) === '@@BRANCH2@@').length;
   const ctx1 = document.getElementById('chart-branches');
   if (ctx1) {
     if (dashboardCharts.branches) dashboardCharts.branches.destroy();
     dashboardCharts.branches = new Chart(ctx1, {
       type: 'doughnut',
       data: {
-        labels: ['كفر الدوار', 'فرع اسكندرية'],
+        labels: ['@@BRANCH1@@', '@@BRANCH2@@'],
         datasets: [{ data: [kafr, vic], backgroundColor: ['#1a2a4a', '#c9a84c'], borderWidth: 0 }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', rtl: true } } }
@@ -6156,9 +6156,15 @@ function openDuplicateScanner() {
 }
 
 function normalizeStudentsBranch(value) {
-  const v = String(value || '').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').trim().toLowerCase();
-  if (v.includes('كفر')) return 'كفر الدوار';
-  if (v.includes('اسكند') || v.includes('اسكندر') || v.includes('alex')) return 'فرع اسكندرية';
+  const norm = x => String(x || '').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').trim().toLowerCase();
+  const v = norm(value);
+  if (!v) return v;
+  const b1 = '@@BRANCH1@@', b2 = '@@BRANCH2@@';
+  const n1 = norm(b1), n2 = norm(b2);
+  const hit = n => v === n || v.includes(n) || (v.length >= 3 && n.includes(v));
+  const m1 = hit(n1), m2 = hit(n2);
+  if (m1 && !m2) return b1;
+  if (m2 && !m1) return b2;
   return v;
 }
 window.studentsBranch = '';
@@ -6182,9 +6188,6 @@ function getStudentCohort(s) {
   const branch = normalizeStudentsBranch(s?.branch);
   const batchMatch = normalizedMeta.match(/دفعة\s*(\d+)/);
   let batch = batchMatch ? Number(batchMatch[1]) : null;
-  if (!batch && branch === 'كفر الدوار' && reg.startsWith('50')) batch = 8;
-  else if (!batch && branch === 'فرع اسكندرية' && reg.startsWith('51')) batch = 8;
-  else if (!batch && branch === 'كفر الدوار' && reg.startsWith('52')) batch = 10;
   return { branch, batch, type, key: type && batch ? type + batch : null };
 }
 function getCountedStudents() {
@@ -6216,7 +6219,7 @@ function openStudentsBranch(branch) {
   document.getElementById('filter-program').value = '';
   document.getElementById('students-branch-home').style.display = 'none';
   document.getElementById('students-branch-content').style.display = '';
-  document.getElementById('students-current-branch').textContent = branch === 'كفر الدوار' ? '📍 فرع كفر الدوار' : '📍 فرع الإسكندرية';
+  document.getElementById('students-current-branch').textContent = branch === '@@BRANCH1@@' ? '📍 @@BRANCH1@@' : '📍 @@BRANCH2@@';
   document.querySelectorAll('#students-category-tabs .students-category-card').forEach(b => {
     const active = b.dataset.category === 'all';
     b.classList.toggle('active', active);
@@ -6310,8 +6313,8 @@ function updateStudentsBranchCounts() {
   const count = branch => getCountedStudents().filter(s => normalizeStudentsBranch(s.branch) === branch).length;
   const a = document.getElementById('stu-home-count-kafr');
   const b = document.getElementById('stu-home-count-vic');
-  if (a) a.textContent = 'عدد الطلاب: ' + count('كفر الدوار');
-  if (b) b.textContent = 'عدد الطلاب: ' + count('فرع اسكندرية');
+  if (a) a.textContent = 'عدد الطلاب: ' + count('@@BRANCH1@@');
+  if (b) b.textContent = 'عدد الطلاب: ' + count('@@BRANCH2@@');
 }
 function renderStudents(list) {
   // ترتيب قائمة الطلاب حسب الدفعة أولًا على مستوى الفرعين وكل الأنظمة؛ ثم رقم القيد داخل الدفعة.
@@ -6534,8 +6537,8 @@ function renderAttendanceLecturesGrid(relevant, selectedId) {
   }
   gridEl.innerHTML = relevant.map(s => {
     const isActive = s.id === selectedId;
-    const branchColor = s.branch === 'كفر الدوار' ? '#3730a3' : '#92400e';
-    const branchBg = s.branch === 'كفر الدوار' ? '#e0e7ff' : '#fef3c7';
+    const branchColor = s.branch === '@@BRANCH1@@' ? '#3730a3' : '#92400e';
+    const branchBg = s.branch === '@@BRANCH1@@' ? '#e0e7ff' : '#fef3c7';
     return `<div onclick="selectAttendanceLecture('${escapeHtml(s.id)}')" style="cursor:pointer;border-radius:12px;padding:14px;border:2px solid ${isActive ? 'var(--gold)' : 'var(--border)'};background:${isActive ? '#fffbeb' : '#fff'};transition:box-shadow .15s;" onmouseover="this.style.boxShadow='0 3px 10px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow='none'">
       <div style="font-weight:800;font-size:14px;color:var(--navy);margin-bottom:4px;">📘 ${escapeHtml(s.subject_name || s.program_name || 'محاضرة')}</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${escapeHtml(s.program_name || '')}</div>
@@ -7188,7 +7191,7 @@ async function loadLeaderboard(batch) {
     return;
   }
   batch = Number(batch);
-  if (label) label.textContent = 'دفعة ' + batch + ' — أفضل 50 متدربًا من كفر الدوار والإسكندرية معًا، دون فصل حسب الفرع أو النظام.';
+  if (label) label.textContent = 'دفعة ' + batch + ' — أفضل 50 متدربًا من جميع الفروع معًا، دون فصل حسب الفرع أو النظام.';
   tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">جاري حساب أوائل دفعة ' + batch + '...</td></tr>';
   if (!allGradesGlobal.length) await loadRiskData();
 
@@ -8164,7 +8167,7 @@ function downloadStudentsExcelTemplate() {
     'رقم القيد': 'AND-2026-001', 'الاسم': 'محمد أحمد علي', 'الرقم القومي': '29801011234567',
     'السن': 22, 'المؤهل': 'دبلوم تجارة', 'العنوان': 'دمنهور، البحيرة',
     'هاتف الطالب': '01012345678', 'ولي الأمر': 'أحمد علي', 'هاتف ولي الأمر': '01112345678',
-    'الفرع': 'كفر الدوار', 'البرنامج': 'مساعد خدمات صحية', 'النظام': 'النظام الأساسي',
+    'الفرع': '@@BRANCH1@@', 'البرنامج': 'اسم البرنامج', 'النظام': 'النظام الأساسي',
     'تاريخ التسجيل': '2026-01-01'
   }];
   const ws = XLSX.utils.json_to_sheet(sample);
@@ -8180,7 +8183,7 @@ function downloadStudentsWordTemplate() {
     'رقم القيد': 'AND-2026-001', 'الاسم': 'محمد أحمد علي', 'الرقم القومي': '29801011234567',
     'السن': 22, 'المؤهل': 'دبلوم تجارة', 'العنوان': 'دمنهور، البحيرة',
     'هاتف الطالب': '01012345678', 'ولي الأمر': 'أحمد علي', 'هاتف ولي الأمر': '01112345678',
-    'الفرع': 'كفر الدوار', 'البرنامج': 'مساعد خدمات صحية', 'النظام': 'النظام الأساسي',
+    'الفرع': '@@BRANCH1@@', 'البرنامج': 'اسم البرنامج', 'النظام': 'النظام الأساسي',
     'تاريخ التسجيل': '2026-01-01'
   }];
   downloadWordDoc([{ title: 'قالب استيراد الطلاب', rows: sample }], 'قالب_استيراد_الطلاب.doc');
@@ -9425,7 +9428,7 @@ function renderExpensesTable(rows) {
   const isAdmin = currentUser?.role === 'admin';
   tbody.innerHTML = rows.map(e => {
     const dateStr = e.expense_date ? new Date(e.expense_date).toLocaleDateString('ar-EG') : '—';
-    const branchBadge = e.branch === 'كفر الدوار' ? 'badge-info' : 'badge-gold';
+    const branchBadge = e.branch === '@@BRANCH1@@' ? 'badge-info' : 'badge-gold';
     return `<tr>
       <td class="no-print" onclick="event.stopPropagation()"><input type="checkbox" class="exp-row-cb" value="${e.id}"></td>
       <td>${dateStr}</td>
@@ -9448,9 +9451,9 @@ function calculateExpenseTotals() {
   let t = { dAll:0, mAll:0, yAll:0, kafrD:0, kafrM:0, kafrY:0, vicD:0, vicM:0, vicY:0 };
   for (const e of allExpenses) {
     const d = e.expense_date, a = Number(e.amount) || 0, b = e.branch;
-    if (d === today) { t.dAll += a; if (b === 'كفر الدوار') t.kafrD += a; if (b === 'فرع اسكندرية') t.vicD += a; }
-    if (d >= monthStart) { t.mAll += a; if (b === 'كفر الدوار') t.kafrM += a; if (b === 'فرع اسكندرية') t.vicM += a; }
-    if (d >= yearStart) { t.yAll += a; if (b === 'كفر الدوار') t.kafrY += a; if (b === 'فرع اسكندرية') t.vicY += a; }
+    if (d === today) { t.dAll += a; if (b === '@@BRANCH1@@') t.kafrD += a; if (b === '@@BRANCH2@@') t.vicD += a; }
+    if (d >= monthStart) { t.mAll += a; if (b === '@@BRANCH1@@') t.kafrM += a; if (b === '@@BRANCH2@@') t.vicM += a; }
+    if (d >= yearStart) { t.yAll += a; if (b === '@@BRANCH1@@') t.kafrY += a; if (b === '@@BRANCH2@@') t.vicY += a; }
   }
   const fmt = n => n.toLocaleString('ar-EG');
   const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = fmt(v); };
@@ -9467,7 +9470,7 @@ function calculateExpenseTotals() {
 function openAddExpense() {
   if (!currentUser) { showToast('سجّل دخول الأول', 'error'); return; }
   document.getElementById('modal-expense-title').textContent = 'إضافة مصروف';
-  const defaultBranch = (currentUser.branch && currentUser.branch !== 'الكل') ? currentUser.branch : 'كفر الدوار';
+  const defaultBranch = (currentUser.branch && currentUser.branch !== 'الكل') ? currentUser.branch : '@@BRANCH1@@';
   document.getElementById('exp-branch').value = defaultBranch;
   document.getElementById('exp-item').value = '';
   document.getElementById('exp-amount').value = '';
@@ -9511,7 +9514,7 @@ async function deleteExpense(id, item) {
 function downloadExpensesExcelTemplate() {
   const sample = [{
     'التاريخ': '2026-01-01', 'البند': 'إيجار الفرع', 'القيمة': 5000,
-    'الفرع': 'كفر الدوار', 'يخصم من الإجمالي': 'نعم', 'ملاحظات': ''
+    'الفرع': '@@BRANCH1@@', 'يخصم من الإجمالي': 'نعم', 'ملاحظات': ''
   }];
   const ws = XLSX.utils.json_to_sheet(sample);
   const wb = XLSX.utils.book_new();
@@ -11238,7 +11241,7 @@ function renderRevenueForecast() {
   const nextMonthEnd = new Date(today.getFullYear(), today.getMonth() + 2, 0);
 
   let expectedTotal = 0, alreadyCollected = 0, installmentsCount = 0;
-  const byBranch = { 'كفر الدوار': 0, 'فرع اسكندرية': 0 };
+  const byBranch = { '@@BRANCH1@@': 0, '@@BRANCH2@@': 0 };
 
   allStudents.filter(s => s.program_id && (!branchFilter || s.branch === branchFilter)).forEach(s => {
     const schedule = getPaymentSchedule(s);
@@ -11283,8 +11286,8 @@ function renderRevenueForecast() {
     <div style="font-size:11px;color:var(--muted);text-align:left;">${collectedPct}% من إيراد الشهر القادم تم تحصيله مبكرًا بالفعل</div>
     ${!branchFilter ? `
     <div style="display:flex;gap:20px;margin-top:14px;font-size:12px;color:var(--muted);">
-      <span>📍 كفر الدوار: <strong style="color:var(--navy);">${byBranch['كفر الدوار'].toLocaleString('ar-EG')} ج</strong></span>
-      <span>📍 فرع اسكندرية: <strong style="color:var(--navy);">${byBranch['فرع اسكندرية'].toLocaleString('ar-EG')} ج</strong></span>
+      <span>📍 @@BRANCH1@@: <strong style="color:var(--navy);">${byBranch['@@BRANCH1@@'].toLocaleString('ar-EG')} ج</strong></span>
+      <span>📍 @@BRANCH2@@: <strong style="color:var(--navy);">${byBranch['@@BRANCH2@@'].toLocaleString('ar-EG')} ج</strong></span>
     </div>` : ''}
   `;
 }
@@ -11441,7 +11444,7 @@ async function loadFinancialReport() {
   // Expenses table
   document.getElementById('fin-expenses-table').innerHTML = expenses.map(e => `<tr>
     <td>${e.expense_date || '—'}</td>
-    <td><span class="badge ${e.branch === 'كفر الدوار' ? 'badge-info' : 'badge-gold'}">${escapeHtml(e.branch)}</span></td>
+    <td><span class="badge ${e.branch === '@@BRANCH1@@' ? 'badge-info' : 'badge-gold'}">${escapeHtml(e.branch)}</span></td>
     <td><strong>${escapeHtml(e.item)}</strong></td>
     <td style="color:#ef4444;font-weight:700">${Number(e.amount).toLocaleString('ar-EG')} ج</td>
     <td style="font-size:12px;color:var(--muted)">${escapeHtml(e.notes || '—')}</td>
@@ -11611,7 +11614,7 @@ function renderScheduleCalendar() {
     cells += `<div class="cal-cell ${isToday ? 'cal-today' : ''}" onclick="openAddSession('${dateStr}')">
       <div class="cal-daynum">${d}</div>
       <div class="cal-sessions">
-        ${daySessions.map(s => `<div class="cal-session-badge ${s.branch === 'كفر الدوار' ? 'kafr' : 'vic'}" onclick="event.stopPropagation();openSessionAttendance('${escapeHtml(s.id)}')" title="${escapeHtml(s.subject_name || s.program_name || '')} — ${escapeHtml(s.program_name || '')} — ${escapeHtml(s.branch)}">
+        ${daySessions.map(s => `<div class="cal-session-badge ${s.branch === '@@BRANCH1@@' ? 'kafr' : 'vic'}" onclick="event.stopPropagation();openSessionAttendance('${escapeHtml(s.id)}')" title="${escapeHtml(s.subject_name || s.program_name || '')} — ${escapeHtml(s.program_name || '')} — ${escapeHtml(s.branch)}">
           ${formatTime12(s.start_time)}<br>${escapeHtml(s.subject_name || s.program_name || '')}
         </div>`).join('')}
       </div>
@@ -11633,7 +11636,7 @@ function renderScheduleTable() {
       <td onclick="openSessionAttendance('${escapeHtml(s.id)}')" style="cursor:pointer">${sessionDuration(s.start_time, s.end_time) || '—'}</td>
       <td onclick="openSessionAttendance('${escapeHtml(s.id)}')" style="cursor:pointer">${escapeHtml(s.program_name || '—')}</td>
       <td onclick="openSessionAttendance('${escapeHtml(s.id)}')" style="cursor:pointer">${escapeHtml(s.subject_name || '—')}</td>
-      <td onclick="openSessionAttendance('${escapeHtml(s.id)}')" style="cursor:pointer"><span class="badge ${s.branch === 'كفر الدوار' ? 'badge-info' : 'badge-gold'}">${escapeHtml(s.branch)}</span></td>
+      <td onclick="openSessionAttendance('${escapeHtml(s.id)}')" style="cursor:pointer"><span class="badge ${s.branch === '@@BRANCH1@@' ? 'badge-info' : 'badge-gold'}">${escapeHtml(s.branch)}</span></td>
       <td onclick="openSessionAttendance('${escapeHtml(s.id)}')" style="cursor:pointer">${escapeHtml(s.trainer || '—')}</td>
       <td class="no-print">
         <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openEditSession('${escapeHtml(s.id)}')">✏️</button>
@@ -14007,7 +14010,7 @@ async function loadDailyRevenueLog() {
     <td>${escapeHtml(r.student_name || '—')}</td>
     <td style="color:#16a34a;font-weight:700;">${Number(r.amount).toLocaleString('ar-EG')} ج.م</td>
     <td>${escapeHtml(r.details || '—')}</td>
-    <td><span class="badge ${r.branch === 'كفر الدوار' ? 'badge-info' : 'badge-gold'}">${escapeHtml(r.branch || '—')}</span></td>
+    <td><span class="badge ${r.branch === '@@BRANCH1@@' ? 'badge-info' : 'badge-gold'}">${escapeHtml(r.branch || '—')}</span></td>
     <td style="font-size:11px;color:var(--muted)"><strong>${revenueDateText}</strong><br><span title="تاريخ ووقت تسجيل الإيراد في النظام">تم الإدخال: ${escapeHtml(enteredAtText)}</span></td>
     <td style="font-size:12px;font-weight:700">${escapeHtml(getExpenseActorLabel(r.created_by))}</td>
   </tr>`;
@@ -14064,7 +14067,7 @@ async function renderExecutiveDashboard() {
   const lateCount = allStudents.filter(s => s.program_id && getStudentPayStatus(s).status === 'red').length;
   document.getElementById('exec-late-payments').textContent = lateCount;
 
-  const branches = ['كفر الدوار', 'فرع اسكندرية'];
+  const branches = ['@@BRANCH1@@', '@@BRANCH2@@'];
   const branchRows = branches.map(b => {
     const branchStudents = allStudents.filter(s => s.branch === b).length;
     let branchRevenue = 0;
@@ -14074,7 +14077,7 @@ async function renderExecutiveDashboard() {
     });
     const branchLeads = newLeads.filter(l => l.branch === b).length;
     return `<tr>
-      <td><span class="badge ${b === 'كفر الدوار' ? 'badge-info' : 'badge-gold'}">${escapeHtml(b)}</span></td>
+      <td><span class="badge ${b === '@@BRANCH1@@' ? 'badge-info' : 'badge-gold'}">${escapeHtml(b)}</span></td>
       <td>${branchStudents}</td>
       <td>${branchRevenue.toLocaleString('ar-EG')} ج.م</td>
       <td>${branchLeads}</td>
@@ -14836,10 +14839,10 @@ function renderDream() {
   const monthsWithData = Object.keys(monthlyBuckets).length || 1;
   const avgMonthlyGrowth = Math.round(recentStudents.length / monthsWithData);
 
-  const kafrCount = allStudents.filter(s => s.branch === 'كفر الدوار').length;
-  const vicCount = allStudents.filter(s => s.branch === 'فرع اسكندرية').length;
-  const kafrRecent = recentStudents.filter(s => s.branch === 'كفر الدوار').length;
-  const vicRecent = recentStudents.filter(s => s.branch === 'فرع اسكندرية').length;
+  const kafrCount = allStudents.filter(s => s.branch === '@@BRANCH1@@').length;
+  const vicCount = allStudents.filter(s => s.branch === '@@BRANCH2@@').length;
+  const kafrRecent = recentStudents.filter(s => s.branch === '@@BRANCH1@@').length;
+  const vicRecent = recentStudents.filter(s => s.branch === '@@BRANCH2@@').length;
   const kafrGrowthRate = monthsWithData > 0 ? kafrRecent / monthsWithData : 0;
   const vicGrowthRate = monthsWithData > 0 ? vicRecent / monthsWithData : 0;
 
@@ -14859,14 +14862,14 @@ function renderDream() {
     const closingRate = vicGrowthRate - kafrGrowthRate;
     if (closingRate > 0) {
       const monthsToClose = Math.ceil(gapNow / closingRate);
-      crossoverSentence = `<p>بمعدل النمو الحالي، فرع <strong>فرع اسكندرية</strong> قد يتجاوز <strong>كفر الدوار</strong> فى عدد الطلاب خلال نحو <strong>${monthsToClose} شهر</strong> تقريبًا، إذا استمر هذا الاتجاه دون تغيير.</p>`;
+      crossoverSentence = `<p>بمعدل النمو الحالي، فرع <strong>@@BRANCH2@@</strong> قد يتجاوز <strong>@@BRANCH1@@</strong> فى عدد الطلاب خلال نحو <strong>${monthsToClose} شهر</strong> تقريبًا، إذا استمر هذا الاتجاه دون تغيير.</p>`;
     }
   } else if (kafrGrowthRate > vicGrowthRate && kafrCount < vicCount) {
     const gapNow = vicCount - kafrCount;
     const closingRate = kafrGrowthRate - vicGrowthRate;
     if (closingRate > 0) {
       const monthsToClose = Math.ceil(gapNow / closingRate);
-      crossoverSentence = `<p>بمعدل النمو الحالي، فرع <strong>كفر الدوار</strong> قد يتجاوز <strong>فرع اسكندرية</strong> فى عدد الطلاب خلال نحو <strong>${monthsToClose} شهر</strong> تقريبًا، إذا استمر هذا الاتجاه دون تغيير.</p>`;
+      crossoverSentence = `<p>بمعدل النمو الحالي، فرع <strong>@@BRANCH1@@</strong> قد يتجاوز <strong>@@BRANCH2@@</strong> فى عدد الطلاب خلال نحو <strong>${monthsToClose} شهر</strong> تقريبًا، إذا استمر هذا الاتجاه دون تغيير.</p>`;
     }
   }
 
@@ -14879,14 +14882,14 @@ function renderDream() {
     <div class="dream-card">
       <p>📅 فى <strong>${escapeHtml(futureLabel)}</strong>، إذا استمر ${SYSTEM_NAME} على نفس وتيرة نموه الحالية...</p>
       <p>سيكون عدد الطلاب الإجمالي حوالي <strong>${projectedTotal}</strong> طالب وطالبة، بزيادة تقديرية ${projectedTotal - allStudents.length} عن العدد الحالي (${allStudents.length}).</p>
-      <p>فرع <strong>كفر الدوار</strong> سيكون فيه نحو <strong>${projectedKafr}</strong> طالب، وفرع <strong>فرع اسكندرية</strong> نحو <strong>${projectedVic}</strong> طالب.</p>
+      <p>فرع <strong>@@BRANCH1@@</strong> سيكون فيه نحو <strong>${projectedKafr}</strong> طالب، وفرع <strong>@@BRANCH2@@</strong> نحو <strong>${projectedVic}</strong> طالب.</p>
       ${crossoverSentence}
       ${breakevenSentence}
       <p style="margin-top:20px;opacity:.6;font-size:13px;">هذا سيناريو تقديري مبني على معدل التسجيل الفعلي لآخر ${monthsWithData} شهر (${recentStudents.length} طالب جديد بمعدل ${avgMonthlyGrowth} طالب/شهر)، وليس تنبؤًا مضمونًا — العوامل الخارجية (تسويق، منافسة، موسمية) قد تغيّر المسار.</p>
       <div class="dream-stats-row">
         <span class="dream-stat-pill">📊 معدل النمو الحالي: ${avgMonthlyGrowth} طالب/شهر</span>
-        <span class="dream-stat-pill">📍 كفر الدوار: +${(kafrGrowthRate).toFixed(1)}/شهر</span>
-        <span class="dream-stat-pill">📍 فرع اسكندرية: +${(vicGrowthRate).toFixed(1)}/شهر</span>
+        <span class="dream-stat-pill">📍 @@BRANCH1@@: +${(kafrGrowthRate).toFixed(1)}/شهر</span>
+        <span class="dream-stat-pill">📍 @@BRANCH2@@: +${(vicGrowthRate).toFixed(1)}/شهر</span>
       </div>
     </div>
   `;
@@ -15072,8 +15075,8 @@ async function deleteSession(id) {
 function downloadSessionsExcelTemplate() {
   const sample = [{
     'التاريخ': '2026-01-04', 'من': '17:00', 'إلى': '19:00',
-    'المادة': 'مساعد خدمات صحية', 'البرنامج': 'مساعد خدمات صحية', 'النظام': 'النظام الأساسي',
-    'الفرع': 'كفر الدوار', 'المدرب': 'أحمد علي', 'كود المدرب': '', 'ملاحظات': ''
+    'المادة': 'اسم المادة', 'البرنامج': 'اسم البرنامج', 'النظام': 'النظام الأساسي',
+    'الفرع': '@@BRANCH1@@', 'المدرب': 'أحمد علي', 'كود المدرب': '', 'ملاحظات': ''
   }];
   const ws = XLSX.utils.json_to_sheet(sample);
   const wb = XLSX.utils.book_new();
@@ -15514,8 +15517,8 @@ function updateWaPreview() {
 function getWaTargets(target) {
   switch(target) {
     case 'late': return allStudents.filter(s => s.program_id && getStudentPayStatus(s).status === 'red' && (s.guardian_phone || s.phone));
-    case 'kafr': return allStudents.filter(s => s.branch === 'كفر الدوار' && (s.guardian_phone || s.phone));
-    case 'victoria': return allStudents.filter(s => s.branch === 'فرع اسكندرية' && (s.guardian_phone || s.phone));
+    case 'kafr': return allStudents.filter(s => s.branch === '@@BRANCH1@@' && (s.guardian_phone || s.phone));
+    case 'victoria': return allStudents.filter(s => s.branch === '@@BRANCH2@@' && (s.guardian_phone || s.phone));
     default: return allStudents.filter(s => s.guardian_phone || s.phone);
   }
 }

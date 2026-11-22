@@ -21,11 +21,14 @@ jobs:
       - name: Stage static frontend only
         run: |
           mkdir _site
-          rsync -a --exclude='_site' --exclude='.git' --exclude='.github' --exclude='supabase' --exclude='scripts' --exclude='deploy.ps1' --exclude='serve.ps1' --exclude='README.md' ./ _site/
+          rsync -a --exclude='_site' --exclude='.git' --exclude='.github' --exclude='supabase' --exclude='scripts' --exclude='deploy.ps1' --exclude='serve.ps1' --exclude='README.md' --exclude='client.json' ./ _site/
           touch _site/.nojekyll
-      - name: Safety check (no secrets, no old project references)
+      - name: Apply client configuration (branch names)
+        run: python3 scripts/apply-client.py _site client.json
+      - name: Safety check (no secrets, no old project references, no unreplaced tokens)
         run: |
           if grep -rIlE "uvwarprsghwvrfmdaaqv|sb_secret_|eyJ[A-Za-z0-9_-]{30,}\." _site; then echo "Sensitive reference found"; exit 1; fi
+          if grep -rIl "@@BRANCH" _site; then echo "Unreplaced client token found"; exit 1; fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

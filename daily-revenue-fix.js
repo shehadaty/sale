@@ -119,7 +119,7 @@
         <td>${escapeHtml(r.student_name || '—')}</td>
         <td style="color:${counted ? '#16a34a' : '#64748b'};font-weight:700;">${money(r.amount)} ج.م</td>
         <td>${escapeHtml(r.details || '—')} <span class="badge ${counted ? 'badge-success' : 'badge-warning'}" style="margin-right:5px;">${counted ? 'يُحتسب' : 'لا يُحتسب'}</span></td>
-        <td><span class="badge ${r.branch === 'كفر الدوار' ? 'badge-info' : 'badge-gold'}">${escapeHtml(r.branch || '—')}</span></td>
+        <td><span class="badge ${r.branch === '@@BRANCH1@@' ? 'badge-info' : 'badge-gold'}">${escapeHtml(r.branch || '—')}</span></td>
         <td style="font-size:11px;color:var(--muted)"><strong>${revenueDateText}</strong><br><span title="تاريخ ووقت تسجيل الإيراد في النظام">تم الإدخال: ${escapeHtml(enteredAt)}</span></td>
       </tr>`;
     }).join('') : '<tr><td colspan="8"><div class="empty-state"><div class="emoji">💵</div><h4>لا توجد إيرادات مسجّلة</h4></div></td></tr>';
